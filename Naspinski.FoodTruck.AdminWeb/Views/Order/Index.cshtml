@@ -60,7 +60,10 @@
 
     <script>
 
-        let connection = new signalR.HubConnection("/hub", { transport: signalR.TransportType.WebSockets });
+        let connection = new signalR.HubConnectionBuilder()
+            .withUrl("/hub")
+            .configureLogging(signalR.LogLevel.Information)
+            .build();
         connection.start();
         
         $(document).ready(function () {

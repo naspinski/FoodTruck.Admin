@@ -176,13 +176,17 @@ else
                 self.ItemId(data.itemId);
 
                 self.Prices([]);
-                for (var i = 0; i < data.prices.length; i++) {
-                    self.Prices.push(new PriceModel(data.prices[i]))
+                if (data.prices !== null) {
+                    for (var i = 0; i < data.prices.length; i++) {
+                        self.Prices.push(new PriceModel(data.prices[i]))
+                    }
                 }
 
                 self.ComboParts([]);
-                for (var i = 0; i < data.comboParts.length; i++) {
-                    self.ComboParts.push(new ComboPartModel(data.comboParts[i]))
+                if (data.comboParts !== null) {
+                    for (var i = 0; i < data.comboParts.length; i++) {
+                        self.ComboParts.push(new ComboPartModel(data.comboParts[i]))
+                    }
                 }
             };
 

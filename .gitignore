@@ -289,4 +289,4 @@ __pycache__/
 Naspinski.FoodTruck.AdminWeb/appsettings.Champlin.json
 Naspinski.FoodTruck.AdminWeb/appsettings.Development.json
 Naspinski.FoodTruck.AdminWeb/appsettings.Production.json
-Naspinski.FoodTruck.AdminWeb/wwwroot/lib/*
+bower_components/*
