@@ -1,0 +1,84 @@
+﻿@model Naspinski.FoodTruck.AdminWeb.Models.Files.DocumentIndexModel
+@{
+    var categories = Model.Categories;
+    var deleted = ViewData["Deleted"].ToString() == "False";
+}
+<h2>
+    @(!deleted ? "Deleted" : "") Documents
+</h2>
+<hr />
+<form method="post" id="form-edit" enctype="multipart/form-data">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <label asp-for="Category"></label>
+                <select asp-for="Category" data-bind="value: ImageId" asp-items="categories" class="form-control"></select>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label asp-for="File"></label>
+                <input asp-for="File" type="file" class="form-control" />
+                <span asp-validation-for="File" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <br />
+                <button type="submit" class="btn btn-default">
+                    <i class="glyphicon glyphicon-floppy"></i>
+                    Save
+                </button>
+            </div>
+        </div>
+    </div>
+</form>
+<hr />
+<ul class="list-group">
+    @if (!Model.Documents.Any())
+    {
+        <li class="list-group-item">no documents</li>}
+    @foreach (var item in Model.Documents)
+    {
+        <li class="list-group-item" id="item-@item.Id">
+            <div class="row">
+                <div class="col-sm-12">
+                    <span class="pull-right" style="padding-left: 1em;">
+                        <a class="btn btn-default item-delete" data-id="@item.Id" data-restore="@item.IsDeleted">
+                            <i class="glyphicon @(item.IsDeleted ? "glyphicon-refresh" : "glyphicon-trash")"></i>
+                        </a>
+                    </span>
+                    <h4>
+                        <a href="@item.Location">
+                            @item.Category
+                            <span class="pull-right">@item.LastModified.DateTime.ToShortDateString()</span>
+                        </a>
+                    </h4>
+                    <pre>@item.Location</pre>
+                </div>
+            </div>
+        </li>
+    }
+</ul>
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+    <script>
+        $(document).ready(function () {
+            $('.item-delete').on('click', function (e) {
+                const id = $(this).data('id');
+                const restore = $(this).data('restore');
+                e.preventDefault();
+                $.ajax('/Documents/Delete/' + id + '?isRestore=' + restore, {
+                    type: 'Delete',
+                    success: function (data) {
+                        $.toast({ text: 'Deleted', icon: 'success' })
+                        $('#item-' + id).remove();
+                    },
+                    error: function (data) {
+                        $.toast({ text: 'Unknown error occurred', hideAfter: false, icon: 'error' })
+                    }
+                })
+            });
+        });
+    </script>
+}

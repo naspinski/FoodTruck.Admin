@@ -1,0 +1,157 @@
+﻿@{  var isSandbox = ViewData["Sandbox"].ToString() == "True"; }
+@{  var showMade = ViewData["ShowMade"].ToString() == "True"; }
+<h2>
+    @(showMade ? "New/Completed" : "New")
+    @(isSandbox ? "Sandbox" : "") 
+    Orders
+    <a id="sandbox" data-val="@isSandbox.ToString().ToLower()" class="btn btn-default pull-right">
+        @(!isSandbox ? "Sandbox" : "Actual")
+    </a>
+    <a id="complete" data-val="@showMade.ToString().ToLower()" class="btn btn-default pull-right">
+        @(showMade ? "Only New" : "Include Complete")
+    </a>
+    <div style="position:relative; display:inline; padding-left: 1em">
+        <input class="form-control" style="width:8em;display:inline" id="from" value="@ViewData["From"]" /> -
+        <input class="form-control" style="width:8em;display:inline" id="to" value="@ViewData["To"]" />
+        <a class="btn btn-default" id="jump">
+            <i class="glyphicon glyphicon-arrow-right"></i>
+        </a>
+    </div>
+</h2>
+<hr />
+
+<ul class="list-group" data-bind="visible: orders().length < 1">
+    <li class="list-group-item">
+        no orders
+    </li>
+</ul>
+<ul class="list-group" data-bind="foreach: orders, visible: orders().length > 0">
+    <li class="list-group-item" data-bind="attr: { 'id': 'item-' + id }">
+        <h4>
+            <span style="font-weight:bold" data-bind="text:('I-' + id)"></span> |
+            <span data-bind="text:name"></span>
+            <span data-bind="visible: (name !== '')"> | </span>
+            <span data-bind="text:email"></span>
+            | <span data-bind="text:createdString"></span>
+            | <span data-bind="text:priceAsCurrency"></span>
+            <span class="pull-right">
+                <a class="btn btn-default item-made" title="mark as done" data-bind="click: function(order) { $root.made(order) }, css: { 'btn-default': !isMade, 'btn-success': isMade }">
+                    <i class="glyphicon glyphicon-check"></i>
+                    <span style="font-size:.75em" data-bind="visible: isMade, text:madeString"></span>
+                </a>
+            </span>
+            <span class="pull-right">
+                <a class="btn item-notify" title="send notification" data-bind="click: function(order) { $root.notify(order) }, css: { 'btn-default': !isNotified, 'btn-success': isNotified }">
+                    <i class="glyphicon glyphicon-send"></i>
+                    <span style="font-size:.75em" data-bind="visible: isNotified, text:notifiedString"></span>
+                </a>
+            </span>
+        </h4> 
+        <pre style="clear:both;" data-bind="text:fullText"></pre>
+    </li>
+</ul>
+
+
+@section Scripts {
+
+    @await Html.PartialAsync("_KnockoutScriptsPartial")
+    @await Html.PartialAsync("_DateTimePicker")
+    @await Html.PartialAsync("_SignalRPartial")
+
+    <script>
+
+        let connection = new signalR.HubConnection("/hub", { transport: signalR.TransportType.WebSockets });
+        connection.start();
+        
+        $(document).ready(function () {
+            
+            let koModel = new OrdersModel();
+            ko.applyBindings(koModel);
+
+            $('#test').on('click', function () {
+                connection.invoke('broadcast', 'new-order');
+            })
+
+            $('#from, #to').datetimepicker({
+                format: 'MM-D-YYYY'
+            });
+
+            $('#jump').on('click', function () {
+                window.location.href = 'Order' + koModel.qString();
+            });
+
+            $('#sandbox').on('click', function () {
+                window.location.href = 'Order' + koModel.qString($('#sandbox').data('val') === false, null);
+            });
+
+            $('#complete').on('click', function () {
+                window.location.href = 'Order' + koModel.qString(null, $('#complete').data('val') === false);
+            });
+            
+            connection.on('broadcast', (message) => {
+                console.log('signal: ' + message);
+                if (message === 'new-order') {
+                    $.toast({ text: 'New order received', hideAfter: 60000, icon: 'success' });
+                    koModel.load();
+                } else if (message === 'notifications-sent') {
+                    $.toast({ text: 'Auto-notifications sent', hideAfter: 60000, icon: 'success' });
+                    koModel.load();
+                }
+            });
+        });
+
+        function OrdersModel() {
+            let self = this;
+
+            self.orders = ko.observableArray([]);
+
+            self.load = function () {
+                $.ajax({
+                    url: '/Order/Get' + self.qString(),
+                    type: 'GET',
+                    success: function (data) {
+                        self.orders(data);
+                    },
+                    error: function () {
+                        $.toast({ text: 'Unknown error occurred', hideAfter: false, icon: 'error' })
+                    },
+                });
+            }
+
+            self.qString = function (sandbox, showMade) {
+                if (sandbox === undefined || sandbox == null) sandbox = $('#sandbox').data('val');
+                if (showMade === undefined || showMade == null) showMade = $('#complete').data('val');
+                return '?from=' + $('#from').val() + '&to=' + $('#to').val() + '&sandbox=' + sandbox + '&showMade=' + showMade;
+            }
+
+            self.notify = function (order) {
+                self.put("Notify", order.id);
+            }
+
+            self.made = function (order) {
+                self.put("Made", order.id);
+            }
+
+            self.put = function (action, id) {
+                console.log(id);
+                $.ajax({
+                    url: '/Order/' + action,
+                    type: 'PUT',
+                    data: { id: id },
+                    success: function (data) {
+                        self.load();
+                        $.toast({
+                            text: action === 'Made' ? 'marked as made' : 'notification sent',
+                            hideAfter: 3000, icon: 'success'
+                        })
+                    },
+                    error: function () {
+                        $.toast({ text: 'Unknown error occurred', hideAfter: false, icon: 'error' })
+                    },
+                });
+            }
+
+            self.load();
+        }
+    </script>
+}

@@ -1,0 +1,84 @@
+﻿@model Naspinski.FoodTruck.Data.Distribution.Models.Events.EventModel
+@{
+    var locations = ViewData["Locations"] as IEnumerable<SelectListItem>;
+}
+
+<h2>
+    <span id="new-edit">@(Model.IsNew ? "New" : "Edit") </span>
+    Event
+    <a class="btn btn-default pull-right" asp-area="" asp-controller="Event" asp-action="Index">
+        <i class="glyphicon glyphicon-list"></i>
+        Events
+    </a>
+</h2>
+<hr />
+@if (locations != null && locations.Any())
+{
+<div class="row">
+    <div class="col-md-4">
+        <form method="post" id="form-edit">
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="Begins"></label>
+                <input name="Begins" id="begins" value="@Model.Begins" class="form-control datetime-picker" />
+                <span asp-validation-for="Begins" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Ends"></label>
+                <input id="Ends" name="Ends" value="@Model.Ends" class="form-control datetime-picker" />
+                <span asp-validation-for="Ends" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <a class="btn btn-xs btn-default pull-right" asp-area="" asp-controller="Location" asp-action="Edit">
+                    <i class="glyphicon glyphicon-plus"></i>
+                    Location
+                </a>
+                <label asp-for="LocationId"></label>
+                <select asp-for="LocationId" asp-items="locations" class="form-control"></select>
+                <span asp-validation-for="LocationId" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-primary">
+                <i class="glyphicon glyphicon-floppy"></i>
+                Save
+            </button>
+        </form>
+    </div>
+</div>
+} else
+{
+    <div>
+        a location is required to make a new event
+        <a asp-area="" asp-controller="Location" asp-action="Edit">add a location</a>
+    </div>
+}
+@section Scripts {
+
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+    @await Html.PartialAsync("_DateTimePicker")
+
+    <script>
+        $(document).ready(function () {
+            $('#form-edit').on('submit', function (e) {
+                if ($('#form-edit').valid()) {
+                    e.preventDefault();
+                    $.ajax('/Event/Edit', {
+                        type: 'POST',
+                        data: $('#form-edit').serialize(),
+                        success: function (data) {
+                            $.toast({ text: 'Saved', icon: 'success' })
+                            $('#new-edit').html("Edit");
+                            $('#Id').val(data.id);
+                        },
+                        error: function (data) {
+                            $.toast({ text: 'Unknown error occurred', hideAfter: false, icon: 'error' })
+                        }
+                    })
+                }
+            });
+
+            $('.datetime-picker').datetimepicker({
+                sideBySide: true
+            });
+        });
+    </script>
+}

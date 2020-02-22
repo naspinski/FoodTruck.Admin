@@ -1,0 +1,37 @@
+﻿@model Naspinski.FoodTruck.AdminWeb.Models.DeliveryDestination.DeliveryDestinationsIndexModel
+<h2>
+    Delivery Limits
+</h2>
+<hr />
+
+<div class="row">
+    <div class="col-md-6">
+        <partial name="_crud" model="Model.City" />
+    </div>
+    <div class="col-md-6">
+        <partial name="_crud" model="Model.ZipCode" />
+    </div>
+</div>
+<hr />
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+    <script>
+        $(document).ready(function () {
+            $('.item-delete').on('click', function (e) {
+                const id = $(this).data('id');
+                e.preventDefault();
+                $.ajax('/DeliveryDestinations/Delete/' + id, {
+                    type: 'Delete',
+                    success: function (data) {
+                        $.toast({ text: 'Deleted', icon: 'success' })
+                        $('#item-' + id).remove();
+                    },
+                    error: function (data) {
+                        $.toast({ text: 'Unknown error occurred', hideAfter: false, icon: 'error' })
+                    }
+                })
+            });
+        });
+    </script>
+}

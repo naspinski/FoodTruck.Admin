@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26730.16
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Naspinski.FoodTruck.AdminWeb", "Naspinski.FoodTruck.AdminWeb\Naspinski.FoodTruck.AdminWeb.csproj", "{561482A7-25F5-40A0-B26F-A03BAA021BC2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Champlin|Any CPU = Champlin|Any CPU
+		Debug|Any CPU = Debug|Any CPU
+		Development|Any CPU = Development|Any CPU
+		Production|Any CPU = Production|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{561482A7-25F5-40A0-B26F-A03BAA021BC2}.Champlin|Any CPU.ActiveCfg = Champlin|Any CPU
+		{561482A7-25F5-40A0-B26F-A03BAA021BC2}.Champlin|Any CPU.Build.0 = Champlin|Any CPU
+		{561482A7-25F5-40A0-B26F-A03BAA021BC2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{561482A7-25F5-40A0-B26F-A03BAA021BC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{561482A7-25F5-40A0-B26F-A03BAA021BC2}.Development|Any CPU.ActiveCfg = Development|Any CPU
+		{561482A7-25F5-40A0-B26F-A03BAA021BC2}.Development|Any CPU.Build.0 = Development|Any CPU
+		{561482A7-25F5-40A0-B26F-A03BAA021BC2}.Production|Any CPU.ActiveCfg = Production|Any CPU
+		{561482A7-25F5-40A0-B26F-A03BAA021BC2}.Production|Any CPU.Build.0 = Production|Any CPU
+		{561482A7-25F5-40A0-B26F-A03BAA021BC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{561482A7-25F5-40A0-B26F-A03BAA021BC2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E6F5F9CB-E826-41A6-A33B-45E13E007B59}
+	EndGlobalSection
+EndGlobal

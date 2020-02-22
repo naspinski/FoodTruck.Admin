@@ -1,0 +1,125 @@
+﻿@using System.Collections.Generic
+@using S = Naspinski.FoodTruck.Data.Constants.SettingName;
+@model IEnumerable<Naspinski.FoodTruck.AdminWeb.Models.Settings.SettingModel>
+@{
+    var images = ViewData["Images"] as IEnumerable<SelectListItem>;
+    var locations = ViewData["Locations"] as IEnumerable<SelectListItem>;
+}
+<h2>Settings</h2>
+<hr />
+<form method="post" id="form-settings">
+    <div class="row">
+        @foreach (string category in Model.Select(x => x.Category).Distinct())
+        {
+            <div class="col-md-4">
+                <h3>@category</h3>
+                @foreach (var setting in Model.Where(x => !x.IsHidden && x.Category == category).OrderBy(x => x.Name))
+                {
+                    <div class="form-group">
+                        <label for="@setting.Name">@setting.DisplayName</label>
+                        @switch (setting.DateType)
+                        {
+                            case Naspinski.FoodTruck.Data.Constants.DataType.Boolean:
+                                <text>
+                                    <input type="checkbox" @(setting.Value.ToLower() == "true" ? "checked=\"checked\"" : string.Empty) style="float:left" id="@setting.Name" name="@setting.Name" />
+                                </text>
+                                break;
+                            case Naspinski.FoodTruck.Data.Constants.DataType.DropdownString:
+                                <select id="@setting.Name" name="@setting.Name" class="form-control">
+                                    <option value="">-</option>
+                                    @foreach (var option in images)
+                                    {
+                                        <option selected="@(option.Value == setting.Value)" value="@option.Value">@option.Text</option>}
+                                </select>
+                                break;
+                            case Naspinski.FoodTruck.Data.Constants.DataType.DropdownId:
+                                <select id="@setting.Name" name="@setting.Name" class="form-control">
+                                    <option value="">-</option>
+                                    @if (ViewData[setting.Name + "List"] != null)
+                                    {
+                                        foreach (var option in ViewData[setting.Name + "List"] as IEnumerable<SelectListItem>)
+                                        {
+                                            <option selected="@(option.Value == setting.Value)" value="@option.Value">@option.Text</option>}
+                                    }
+                                    }
+                                </select>
+                                break;
+                            case Naspinski.FoodTruck.Data.Constants.DataType.Integer:
+                                <text>
+                                    <input id="@setting.Name" name="@setting.Name" class="form-control" type="number" value="@setting.Value" />
+                                </text>
+                                break;
+                            case Naspinski.FoodTruck.Data.Constants.DataType.LongString:
+                                <text>
+                                    <textarea id="@setting.Name" name="@setting.Name" class="form-control">@setting.Value</textarea>
+                                </text>
+                                break;
+                            case Naspinski.FoodTruck.Data.Constants.DataType.DateTime:
+                                <text>
+                                    <input id="@setting.Name" name="@setting.Name" class="form-control datetime-picker" type="text" value="@setting.Value" />
+                                </text>
+                                break;
+                            case Naspinski.FoodTruck.Data.Constants.DataType.Date:
+                                <text>
+                                    <input id="@setting.Name" name="@setting.Name" class="form-control date-picker" type="text" value="@setting.Value" />
+                                </text>
+                                break;
+                            case Naspinski.FoodTruck.Data.Constants.DataType.Time:
+                                <text>
+                                    <input id="@setting.Name" name="@setting.Name" class="form-control time-picker" type="text" value="@setting.Value" />
+                                </text>
+                                break;
+                            case Naspinski.FoodTruck.Data.Constants.DataType.Decimal:
+                            default:
+                                <text>
+                                    <input id="@setting.Name" name="@setting.Name" class="form-control" type="text" value="@setting.Value" />
+                                </text>
+                                break;
+                        }
+                    </div>
+                }
+            </div>
+        }
+    </div>
+    <button type="submit" id="frm-sub" class="btn btn-primary">
+        <i class="glyphicon glyphicon-floppy"></i>
+        Save
+    </button>
+</form>
+
+@section Scripts {
+
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+    @await Html.PartialAsync("_DateTimePicker")
+
+    <script>
+        $(document).ready(function () {
+            $('#form-settings').on('submit', function (e) {
+                if ($('#form-settings').valid()) {
+                    e.preventDefault();
+                    $.ajax('/Settings/Index', {
+                        type: 'PUT',
+                        data: $('#form-settings').serialize(),
+                        success: function (data) {
+                            $.toast({ text: 'Saved', icon: 'success' })
+                            $('#header-title').html($('#Title').val());
+                        },
+                        error: function (data) {
+                            $.toast({ text: 'Unknown error occurred', hideAfter: false, icon: 'error' })
+                        }
+                    })
+                }
+            });
+        
+            $('input.datetime-picker').datetimepicker({
+                sideBySide: true
+            });
+            $('input.date-picker').datetimepicker({
+                format: 'YYYY-MM-DD'
+            });
+            $('input.time-picker').datetimepicker({
+                format: 'hh:mm A'
+            });
+        });
+    </script>
+}

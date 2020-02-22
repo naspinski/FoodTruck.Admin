@@ -1,0 +1,290 @@
+﻿@model Naspinski.FoodTruck.Data.Distribution.Models.Menu.MenuItemModel
+@{ 
+    var categories = ViewData["Categories"] as IEnumerable<SelectListItem>;
+    var images = ViewData["Images"] as IEnumerable<SelectListItem>;
+}
+
+<h2>
+    <span data-bind="text: (IsNew() ? 'New' : 'Edit')"></span>
+    Menu Item
+    <a class="btn btn-default pull-right" asp-area="" asp-controller="Menu" asp-action="Index">
+        <i class="glyphicon glyphicon-cutlery"></i>
+        Menu
+    </a>
+</h2>
+<hr />
+<div class="row">
+    <form method="post" id="form-edit">
+        <div class="col-md-4">
+            <input type="hidden" asp-for="Id" data-bind="value: Id" />
+            <div class="form-group">
+                <a class="btn btn-xs btn-default pull-right" asp-area="" asp-controller="Category" asp-action="Edit">
+                    <i class="glyphicon glyphicon-plus"></i>
+                    Category
+                </a>
+                <label asp-for="CategoryId"></label>
+                @if (categories.Any())
+        {
+            <select asp-for="CategoryId" data-bind="value: CategoryId" asp-items="categories" class="form-control">
+                <option></option>
+            </select>
+            <span asp-validation-for="CategoryId" class="text-danger"></span>
+}
+else
+{
+        <div>no categories available</div>
+        <input asp-for="CategoryId" type="hidden" data-bind="value: CategoryId" />
+}
+            </div>
+            <div class="form-group">
+                <label asp-for="Name"></label>
+                <input asp-for="Name" data-bind="value: Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ItemId"></label>
+                <input asp-for="ItemId" data-bind="value: ItemId" class="form-control" />
+                <span asp-validation-for="ItemId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description"></label>
+                <textarea asp-for="Description" data-bind="value: Description" class="form-control"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ImageId"></label>
+                <select asp-for="ImageId" data-bind="value: ImageId" asp-items="images" class="form-control">
+                    <option value="">No Image</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="SortOrder"></label>
+                <input asp-for="SortOrder" data-bind="value: SortOrder" type="number" class="form-control" />
+                <span asp-validation-for="SortOrder" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <a class="btn btn-xs btn-default pull-right" data-bind="click: addPrice">
+                    <i class="glyphicon glyphicon-plus"></i>
+                    Price
+                </a>
+                <a class="btn btn-xs btn-default pull-right" asp-area="" asp-controller="PriceType" asp-action="Edit">
+                    <i class="glyphicon glyphicon-plus"></i>
+                    Price Type
+                </a>
+                <label>Prices</label>
+                <div data-bind="foreach: Prices">
+                        <input type="hidden" data-bind="value: Id" />
+
+                        <select data-bind="options: $root.PriceTypes,
+                                optionsText: 'Text',
+                                optionsValue: 'Value',
+                                value: PriceTypeId,
+                                optionsCaption: 'Price Type'"></select>
+
+                        <div class="input-group">
+                            <span class="input-group-addon">$</span>
+                            <input data-bind="value: Amount" class="form-control" type="number" />
+                            <span class="input-group-addon pointer" data-bind="click:$root.removePrice">
+                                <i class="glyphicon glyphicon-remove-sign"></i>
+                            </span>
+                        </div>
+                        <div style="height:.5em"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <a class="btn btn-xs btn-default pull-right" data-bind="click: addComboPart">
+                    <i class="glyphicon glyphicon-plus"></i>
+                    Add Combo Part
+                </a>
+                <label>Combo Parts</label>
+                <div data-bind="foreach: ComboParts">
+                    <br />
+                    <div class="input-group" style="padding-bottom: 7px;">
+                        <select class="form-control"
+                                data-bind="options: $root.Categories,
+                                optionsText: 'Text',
+                                optionsValue: 'Value',
+                                value: CategoryId"></select>
+                        <span class="input-group-addon pointer" data-bind="click:$root.removeComboPart">
+                            <i class="glyphicon glyphicon-remove-sign"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="clear:both">
+            <button type="submit" class="btn btn-primary" data-bind="click: save">
+                <i class="glyphicon glyphicon-floppy"></i>
+                Save
+            </button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+    @await Html.PartialAsync("_KnockoutScriptsPartial")
+
+    <script>
+        $(document).ready(function () {
+            let koModel = new MenuItemModel(@Model.Id);
+            ko.applyBindings(koModel);
+        });
+
+        function MenuItemModel(id) {
+            let self = this;
+            self.Id = ko.observable(0);
+            self.CategoryId = ko.observable(0);
+            self.Name = ko.observable('');
+            self.Description = ko.observable('');
+            self.IsNew = ko.observable(true);
+            self.Prices = ko.observableArray();
+            self.ComboParts = ko.observableArray();
+            self.ImageId = ko.observable(0);
+            self.SortOrder = ko.observable(0);
+            self.ItemId = ko.observable('');
+
+            self.PriceTypes = @Html.Raw(ViewData["PriceTypes"]);
+            self.Categories = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewData["Categories"]));
+
+            self.load = function (id) {
+                $.ajax({
+                    url: '/Menu/Get/' + id,
+                    type: 'GET',
+                    success: function (data) {
+                        self.loadFromModel(data);
+                    },
+                    error: function () {
+                        $.toast({ text: 'Unknown error occurred', hideAfter: false, icon: 'error' })
+                    },
+                });
+            };
+
+            self.loadFromModel = function (data) {
+                self.Id(data.id);
+                self.IsNew(data.isNew);
+                self.CategoryId(data.categoryId);
+                self.Name(data.name);
+                self.Description(data.description);
+                self.ImageId(data.imageId);
+                self.SortOrder(data.sortOrder);
+                self.ItemId(data.itemId);
+
+                self.Prices([]);
+                for (var i = 0; i < data.prices.length; i++) {
+                    self.Prices.push(new PriceModel(data.prices[i]))
+                }
+
+                self.ComboParts([]);
+                for (var i = 0; i < data.comboParts.length; i++) {
+                    self.ComboParts.push(new ComboPartModel(data.comboParts[i]))
+                }
+            };
+
+            self.save = function () {
+                if ($('#form-edit').valid()) {
+                    let model = ko.toJSON(self);
+                    console.log('model', ko.toJS(self));
+                    $.ajax('/Menu/Edit', {
+                        type: 'POST',
+                        data: model,
+                        dataType: 'json',
+                        contentType: 'application/json; charset=utf-8',
+                        success: function (data) {
+                            $.toast({ text: 'Saved', icon: 'success' })
+                            self.loadFromModel(data);
+                        },
+                        error: function (data) {
+                            $.toast({ text: 'Unknown error occurred', hideAfter: false, icon: 'error' })
+                        }
+                    });
+                }
+            }
+
+            self.addPrice = function () {
+                self.Prices.push(new PriceModel());
+            }
+
+            self.removePrice = function (price) {
+                if (price.Id() > 0) {
+                    $.ajax({
+                        url: '/Price/Delete/' + price.Id(),
+                        type: 'DELETE',
+                        success: function (data) {
+                            self.Prices.remove(price);
+                            $.toast({ text: 'Removed', icon: 'success' })
+                        },
+                        error: function () {
+                            $.toast({ text: 'Unknown error occurred', hideAfter: false, icon: 'error' })
+                        },
+                    });
+                } else {
+                    self.Prices.remove(price);
+                    $.toast({ text: 'Removed', icon: 'success' })
+                }
+            }
+            
+            self.removeComboPart = function (comboPart) {
+                if (comboPart.Id() > 0) {
+                    $.ajax({
+                        url: '/ComboPart/Delete/' + comboPart.Id(),
+                        type: 'DELETE',
+                        success: function (data) {
+                            self.ComboParts.remove(comboPart);
+                            $.toast({ text: 'Removed', icon: 'success' })
+                        },
+                        error: function () {
+                            $.toast({ text: 'Unknown error occurred', hideAfter: false, icon: 'error' })
+                        },
+                    });
+                } else {
+                    self.ComboParts.remove(comboPart);
+                    $.toast({ text: 'Removed', icon: 'success' })
+                }
+            }
+
+            self.addComboPart = function () {
+                self.ComboParts.push(new ComboPartModel());
+            }
+
+            self.load(id);
+        }
+
+        function PriceModel(priceModel) {
+            let self = this;
+            self.Id = ko.observable(0);
+            self.PriceTypeId = ko.observable(0);
+            self.Amount = ko.observable(0);
+
+            self.load = function (m) {
+                self.Id(m.id);
+                self.PriceTypeId(m.priceTypeId);
+                self.Amount(m.amount);
+            }
+
+            if (priceModel !== undefined && priceModel !== null) {
+                self.load(priceModel);
+            }
+        }
+
+        function ComboPartModel(comboPartModel) {
+            let self = this;
+            self.Id = ko.observable(0);
+            self.CategoryId = ko.observable(0);
+
+            self.load = function (m) {
+                self.Id(m.id);
+                self.CategoryId(m.categoryId);
+            }
+
+            if (comboPartModel !== undefined && comboPartModel !== null) {
+                self.load(comboPartModel);
+            }
+        }
+    </script>
+}

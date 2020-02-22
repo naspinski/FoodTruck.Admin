@@ -1,0 +1,22 @@
+﻿<h2>
+    @ViewData["Title"] Administration Panel
+</h2>
+<hr />
+<div class="row">
+    @foreach(var linkGroup in Naspinski.FoodTruck.AdminWeb.Constants.HomeLinks.Where(x => x.IncludeInHome))
+    {
+        <div class="col-md-4">
+            <h3>
+                <i class="glyphicon glyphicon-@linkGroup.Link.Glyphicon"></i>
+                @linkGroup.Link.Text
+            </h3>
+            @foreach (var link in linkGroup.Links)
+            {
+                <a class="@link.CssClass" asp-controller="@link.Controller" asp-action="@link.Action">
+                    <i class="glyphicon glyphicon-@link.Glyphicon"></i>
+                    @link.Text
+                </a>
+            }
+        </div>
+    }
+</div>

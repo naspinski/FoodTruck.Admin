@@ -1,0 +1,16 @@
+{
+  "version": "1.0.0",
+  "name": "asp.net",
+  "private": true,
+  "devDependencies": {},
+  "dependencies": {
+    "@aspnet/signalr-client": "^1.0.0-alpha2-final",
+    "boostrap": "3.3.7",
+    "eonasdan-bootstrap-datetimepicker": "^4.17.47",
+    "jquery": "^3.3.1",
+    "jquery-toast-plugin": "^1.3.2",
+    "jquery-validation": "^1.17.0",
+    "jquery-validation-unobtrusive": "^3.2.6",
+    "knockout": "^3.5.0-beta"
+  }
+}

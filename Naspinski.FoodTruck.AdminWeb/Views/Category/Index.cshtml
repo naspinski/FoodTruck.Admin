@@ -1,0 +1,68 @@
+﻿@using System.Collections.Generic
+@model IEnumerable<Naspinski.FoodTruck.Data.Distribution.Models.Menu.CategoryModel>
+
+<h2>
+    Categories
+    <a class="btn btn-default" asp-area="" asp-controller="Category" asp-action="Edit">
+        <i class="glyphicon glyphicon-plus"></i>
+    </a>
+    @if (ViewData["Deleted"].ToString() == "False")
+    {
+        <a class="btn btn-default pull-right" asp-area="" asp-controller="Category" asp-action="Index" asp-route-deleted="true">
+            Deleted Items
+        </a>
+    }
+    else
+    {
+        <a class="btn btn-default pull-right" asp-area="" asp-controller="Category" asp-action="Index">
+            Active Items
+        </a>
+    }
+</h2>
+<hr />
+
+<ul class="list-group">
+    @if (!Model.Any()) {  
+    <li class="list-group-item">
+        no categories
+        <a asp-area="" asp-controller="Category" asp-action="Edit">add a Category item</a>
+    </li> }
+    @foreach(var item in Model.OrderBy(x => x.SortOrder))
+    {
+        <li class="list-group-item" id="item-@item.Id">
+            <h4>
+                <span class="pull-right">
+                    <a class="btn btn-default item-delete" data-id="@item.Id">
+                        <i class="glyphicon glyphicon-trash"></i>
+                    </a>
+                    <a class="btn btn-default" asp-area="" asp-controller="Category" asp-action="Edit" asp-route-id="@item.Id">
+                        <i class="glyphicon glyphicon-pencil"></i>
+                    </a>
+                </span>
+                [@item.SortOrder] @item.Name
+            </h4>
+        </li>
+    }
+</ul>
+
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('.item-delete').on('click', function (e) {
+                const id = $(this).data('id');
+                e.preventDefault();
+                $.ajax('/Category/Delete/' + id, {
+                    type: 'Delete',
+                    success: function (data) {
+                        $.toast({ text: 'Deleted', icon: 'success' })
+                        $('#item-' + id).remove();
+                    },
+                    error: function (data) {
+                        $.toast({ text: 'Unknown error occurred', hideAfter: false, icon: 'error' })
+                    }
+                })
+            });
+        });
+    </script>
+}

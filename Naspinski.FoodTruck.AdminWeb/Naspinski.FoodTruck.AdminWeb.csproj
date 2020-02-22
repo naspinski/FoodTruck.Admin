@@ -1,0 +1,42 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UserSecretsId>aspnet-Naspinski.FoodTruck.AdminWeb-5FF7D839-22CF-4A8D-A123-9E56FF2F0395</UserSecretsId>
+    <Configurations>Debug;Release;Development;Production;Champlin</Configurations>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Naspinski.FoodTruck.Data.Distribution" Version="2018.12.24.2" />
+    <PackageReference Include="Naspinski.Data" Version="1.0.20200221.215248" />
+    <PackageReference Include="Naspinski.FoodTruck.Data" Version="1.0.20200222.102507" />
+    <PackageReference Include="Naspinski.FoodTruck.Data.Access" Version="1.0.20200222.102507" />
+    <PackageReference Include="Naspinski.Messaging" Version="2018.12.3.2" />
+    <PackageReference Include="Elmah.Io.AspNetCore" Version="3.5.56" />
+    <PackageReference Include="IdentityServer4.AspNetIdentity" Version="2.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.2" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.0.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.2" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.4" PrivateAssets="All" />
+    <PackageReference Include="Naspinski.FoodTruck.Data.Distribution" Version="1.0.20200222.102507" />
+    <PackageReference Include="Naspinski.Messaging" Version="1.0.20200222.104518" />
+    <PackageReference Include="Naspinski.Messaging" Version="1.0.20200222.104518" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
+    <PackageReference Include="Sendgrid" Version="9.10.0" />
+    <PackageReference Include="WindowsAzure.Storage" Version="9.3.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="2.0.0" />
+    <DotNetCliToolReference Include="Microsoft.Extensions.SecretManager.Tools" Version="2.0.0" />
+    <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\images\" />
+    <Folder Include="wwwroot\lib\signalr\" />
+  </ItemGroup>
+
+</Project>

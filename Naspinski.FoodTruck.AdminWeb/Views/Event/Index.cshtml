@@ -1,0 +1,86 @@
+﻿@using System.Collections.Generic
+@model IEnumerable<Naspinski.FoodTruck.Data.Distribution.Models.Events.EventModel>
+@{
+    var deleted = ViewData["Deleted"].ToString() == "False";
+}
+<h2>
+    @(!deleted ? "Deleted" : "") Events
+    <a class="btn btn-default" asp-area="" asp-controller="Event" asp-action="Edit">
+        <i class="glyphicon glyphicon-plus"></i>
+    </a>
+    <a class="btn btn-default pull-right" asp-area="" asp-controller="Event" asp-action="Index" asp-route-deleted="@(deleted)">
+        @(deleted ? "Deleted" : "Active") Items
+    </a>
+    <div style="position:relative; display:inline; padding-left: 1em">
+        <input class="form-control" style="width:8em;display:inline" id="from" value="@ViewData["From"]" /> -
+        <input class="form-control" style="width:8em;display:inline" id="to" value="@ViewData["To"]" />
+        <a class="btn btn-default" id="jump">
+            <i class="glyphicon glyphicon-arrow-right"></i>
+        </a>
+    </div>
+</h2>
+<hr />
+<ul class="list-group">
+    @if (!Model.Any())
+    {
+        <li class="list-group-item">
+            no events
+            <a asp-area="" asp-controller="Event" asp-action="Edit">add a Event</a>
+        </li>   }
+    @foreach (var item in Model)
+    {
+        <li class="list-group-item" id="item-@item.Id">
+            <h4>
+                <span class="pull-right">
+                    <a class="btn btn-default item-delete" data-id="@item.Id" data-restore="@item.IsDeleted">
+                        <i class="glyphicon @(item.IsDeleted ? " glyphicon-refresh" : "glyphicon-trash" )"></i>
+                    </a>
+                    <a class="btn btn-default" asp-area="" asp-controller="Event" asp-action="Edit" asp-route-id="@item.Id">
+                        <i class="glyphicon glyphicon-pencil"></i>
+                    </a>
+                </span>
+                @item.Begins.ToString()
+                @if (item.Ends.HasValue)
+                {
+                    <span> - @item.Ends.Value.ToString()</span>
+                }
+                at @item.Location.Name
+            </h4>
+        </li>
+    }
+</ul>
+
+@section Scripts {
+    @await Html.PartialAsync("_DateTimePicker")
+    <script>
+        $(document).ready(function () {
+            $('.item-delete').on('click', function (e) {
+                const id = $(this).data('id');
+                const restore = $(this).data('restore');
+                e.preventDefault();
+                $.ajax('/Event/Delete/' + id + '?isRestore=' + restore, {
+                    type: 'Delete',
+                    success: function (data) {
+                        $.toast({ text: 'Deleted', icon: 'success' })
+                        $('#item-' + id).remove();
+                    },
+                    error: function (data) {
+                        $.toast({ text: 'Unknown error occurred', hideAfter: false, icon: 'error' })
+                    }
+                })
+            });
+
+            $('#from, #to').datetimepicker({
+                format: 'MM-D-YYYY'
+            });
+
+            $('#jump').on('click', function () {
+                window.location.href = 'Event?from=' + $('#from').val() + '&to=' + $('#to').val() + '&deleted=' + $('#deleted').data('val');
+            });
+
+            $('#deleted').on('click', function () {
+                window.location.href = 'Event?from=' + $('#from').val() + '&to=' + $('#to').val() + '&deleted=' + ($('#deleted').data('val') === false);
+            });
+        });
+    </script>
+}
