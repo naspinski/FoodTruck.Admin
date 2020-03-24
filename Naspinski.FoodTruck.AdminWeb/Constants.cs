@@ -34,6 +34,8 @@ namespace Naspinski.FoodTruck.AdminWeb
                         Link = new Link() { Text = "Calendar", Controller = "Event", Action = "Index", Glyphicon = "calendar"},
                         Links = new List<Link>()
                         {
+                            new Link() { Text = "Specials", CssClass = "btn btn-primary btn-lg btn-block", Controller = "Special", Action = "Index", Glyphicon = "list"},
+                            new Link() { Text = "Create Special", CssClass = "btn btn-default btn-lg btn-block", Controller = "Special", Action = "Edit", Glyphicon = "plus-sign"},
                             new Link() { Text = "Events", CssClass = "btn btn-primary btn-lg btn-block", Controller = "Event", Action = "Index", Glyphicon = "list"},
                             new Link() { Text = "Create Event", CssClass = "btn btn-default btn-lg btn-block", Controller = "Event", Action = "Edit", Glyphicon = "plus-sign"},
                             new Link() { Text = "Locations", CssClass = "btn btn-primary btn-lg btn-block", Controller = "Location", Action = "Index", Glyphicon = "list"},

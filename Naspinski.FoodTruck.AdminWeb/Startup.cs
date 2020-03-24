@@ -43,7 +43,8 @@ namespace Naspinski.FoodTruck.AdminWeb
             // Add application services.
             services.AddTransient<IEmailSender, AdminEmailSender>();
             services.AddMvc();
-            
+            services.AddRazorPages().AddRazorRuntimeCompilation();
+
             services.AddTransient<Initializer>();
 
             services.AddSignalR();

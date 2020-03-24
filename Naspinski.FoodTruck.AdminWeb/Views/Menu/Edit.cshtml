@@ -176,14 +176,14 @@ else
                 self.ItemId(data.itemId);
 
                 self.Prices([]);
-                if (data.prices !== null) {
+                if (data.prices !== undefined && data.prices !== null) {
                     for (var i = 0; i < data.prices.length; i++) {
                         self.Prices.push(new PriceModel(data.prices[i]))
                     }
                 }
 
                 self.ComboParts([]);
-                if (data.comboParts !== null) {
+                if (data.comboParts !== undefined && data.comboParts !== null) {
                     for (var i = 0; i < data.comboParts.length; i++) {
                         self.ComboParts.push(new ComboPartModel(data.comboParts[i]))
                     }
@@ -192,13 +192,23 @@ else
 
             self.save = function () {
                 if ($('#form-edit').valid()) {
-                    let model = ko.toJSON(self);
-                    console.log('model', ko.toJS(self));
+                    const temp = ko.toJS(self);
+                    const model = {
+                        Id: temp.Id,
+                        Name: temp.Name,
+                        Description: temp.Description,
+                        ImageId: temp.ImageId,
+                        SortOrder: temp.SortOrder,
+                        ItemId: temp.ItemId,
+                        CategoryId: temp.CategoryId,
+                        Prices: temp.Prices,
+                        ComboParts: temp.ComboParts
+                    };
+                    console.log(temp, model);
                     $.ajax('/Menu/Edit', {
                         type: 'POST',
                         data: model,
                         dataType: 'json',
-                        contentType: 'application/json; charset=utf-8',
                         success: function (data) {
                             $.toast({ text: 'Saved', icon: 'success' })
                             self.loadFromModel(data);
@@ -266,9 +276,11 @@ else
             self.Amount = ko.observable(0);
 
             self.load = function (m) {
-                self.Id(m.id);
-                self.PriceTypeId(m.priceTypeId);
-                self.Amount(m.amount);
+                if (m !== undefined && m !== null) {
+                    self.Id(m.id);
+                    self.PriceTypeId(m.priceTypeId);
+                    self.Amount(m.amount);
+                }
             }
 
             if (priceModel !== undefined && priceModel !== null) {
@@ -282,8 +294,10 @@ else
             self.CategoryId = ko.observable(0);
 
             self.load = function (m) {
-                self.Id(m.id);
-                self.CategoryId(m.categoryId);
+                if (m !== undefined && m !== null) {
+                    self.Id(m.id);
+                    self.CategoryId(m.categoryId);
+                }
             }
 
             if (comboPartModel !== undefined && comboPartModel !== null) {

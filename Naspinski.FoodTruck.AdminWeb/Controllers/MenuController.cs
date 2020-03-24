@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using System.Linq;
+using Naspinski.FoodTruck.AdminWeb.Models;
 
 namespace Naspinski.FoodTruck.AdminWeb.Controllers
 {
@@ -55,9 +56,9 @@ namespace Naspinski.FoodTruck.AdminWeb.Controllers
         }
 
         [HttpPost]
-        public JsonResult Edit([FromBody]MenuItemModel model)
+        public JsonResult Edit(MenuItemIntakeModel model)
         {
-            return Json(_handler.Upsert(model));
+            return Json(_handler.Upsert(model.ToMenuItemModel()));
         }
 
         [HttpDelete]
