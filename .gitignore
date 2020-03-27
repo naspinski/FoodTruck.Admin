@@ -286,7 +286,7 @@ __pycache__/
 *.btm.cs
 *.odx.cs
 *.xsd.cs
-Naspinski.FoodTruck.AdminWeb/appsettings.Champlin.json
-Naspinski.FoodTruck.AdminWeb/appsettings.Development.json
-Naspinski.FoodTruck.AdminWeb/appsettings.Production.json
 bower_components/*
+Naspinski.FoodTruck.Admin/appsettings.Production.json
+Naspinski.FoodTruck.Admin/appsettings.Champlin.json
+Naspinski.FoodTruck.Admin/appsettings.Development.json
