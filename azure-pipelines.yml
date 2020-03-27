@@ -18,8 +18,8 @@ steps:
   inputs:
     command: 'restore'
     restoreSolution: '**/*.sln'
-    feedsToUse: 'select'
-    vstsFeed: 'f3d19341-e5c4-4a06-a8aa-10859192eae8/4b17404e-3135-455e-a753-8c68ee894ef1'
+    feedsToUse: 'config'
+    nugetConfigPath: 'nuget.config'
 
 - task: VSBuild@1
   inputs:
