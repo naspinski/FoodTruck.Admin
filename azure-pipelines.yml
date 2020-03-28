@@ -20,12 +20,6 @@ steps:
     restoreSolution: '**/*.sln'
     feedsToUse: 'config'
     nugetConfigPath: 'nuget.config'
-
-- task: FileTransform@2
-  inputs:
-    folderPath: '$(System.DefaultWorkingDirectory)/'
-    xmlTransformationRules: 
-    jsonTargetFiles: '**/manifest.json'
     
 - task: VSBuild@1
   inputs:
