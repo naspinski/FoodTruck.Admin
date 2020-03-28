@@ -290,3 +290,4 @@ bower_components/*
 Naspinski.FoodTruck.Admin/appsettings.Production.json
 Naspinski.FoodTruck.Admin/appsettings.Champlin.json
 Naspinski.FoodTruck.Admin/appsettings.Development.json
+/Naspinski.FoodTruck.Admin/appsettings.BrothersTavern.json
