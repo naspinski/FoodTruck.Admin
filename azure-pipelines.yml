@@ -21,6 +21,12 @@ steps:
     feedsToUse: 'config'
     nugetConfigPath: 'nuget.config'
 
+- task: FileTransform@2
+  inputs:
+    folderPath: '$(System.DefaultWorkingDirectory)/'
+    xmlTransformationRules: 
+    jsonTargetFiles: '**/manifest.json'
+    
 - task: VSBuild@1
   inputs:
     solution: '$(solution)'
@@ -28,11 +34,6 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
     
-- task: FileTransform@2
-  inputs:
-    folderPath: '$(System.DefaultWorkingDirectory)/**/*.zip'
-    xmlTransformationRules: 
-    jsonTargetFiles: '**/manifest.json'
 
 - task: PublishBuildArtifacts@1
   inputs:
