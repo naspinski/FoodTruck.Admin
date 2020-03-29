@@ -3,14 +3,17 @@
     var locations = ViewData["Locations"] as IEnumerable<SelectListItem>;
 }
 
-<h2>
-    <span id="new-edit">@(Model.IsNew ? "New" : "Edit") </span>
-    Event
-    <a class="btn btn-default pull-right" asp-area="" asp-controller="Event" asp-action="Index">
-        <i class="glyphicon glyphicon-list"></i>
-        Events
-    </a>
-</h2>
+    <h2>
+        <span id="new-edit">@(Model.IsNew ? "New" : "Edit") </span>
+        Event
+        <a class="btn btn-default pull-right" asp-area="" asp-controller="Event" asp-action="Edit">
+            <i class="glyphicon glyphicon-plus"></i>
+        </a>
+        <a class="btn btn-default pull-right" asp-area="" asp-controller="Event" asp-action="Index">
+            <i class="glyphicon glyphicon-list"></i>
+            Events
+        </a>
+    </h2>
 <hr />
 @if (locations != null && locations.Any())
 {

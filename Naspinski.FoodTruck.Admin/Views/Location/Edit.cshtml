@@ -3,14 +3,17 @@
     var states = ViewData["States"] as IEnumerable<SelectListItem>;
 }
 
-<h2>
-    <span id="new-edit">@(Model.IsNew ? "New" : "Edit") </span>
-    Location
-    <a class="btn btn-default pull-right" asp-area="" asp-controller="Location" asp-action="Index">
-        <i class="glyphicon glyphicon-list"></i>
-        Locations
-    </a>
-</h2>
+    <h2>
+        <span id="new-edit">@(Model.IsNew ? "New" : "Edit") </span>
+        Location
+        <a class="btn btn-default pull-right" asp-area="" asp-controller="Location" asp-action="Edit">
+            <i class="glyphicon glyphicon-plus"></i>
+        </a>
+        <a class="btn btn-default pull-right" asp-area="" asp-controller="Location" asp-action="Index">
+            <i class="glyphicon glyphicon-list"></i>
+            Locations
+        </a>
+    </h2>
 <hr />
 <div class="row">
     <div class="col-md-4">

@@ -4,14 +4,17 @@
     var images = ViewData["Images"] as IEnumerable<SelectListItem>;
 }
 
-<h2>
-    <span data-bind="text: (IsNew() ? 'New' : 'Edit')"></span>
-    Menu Item
-    <a class="btn btn-default pull-right" asp-area="" asp-controller="Menu" asp-action="Index">
-        <i class="glyphicon glyphicon-cutlery"></i>
-        Menu
-    </a>
-</h2>
+    <h2>
+        <span data-bind="text: (IsNew() ? 'New' : 'Edit')"></span>
+        Menu Item
+        <a class="btn btn-default pull-right" asp-area="" asp-controller="Menu" asp-action="Edit">
+            <i class="glyphicon glyphicon-plus"></i>
+        </a>
+        <a class="btn btn-default pull-right" asp-area="" asp-controller="Menu" asp-action="Index">
+            <i class="glyphicon glyphicon-cutlery"></i>
+            Menu
+        </a>
+    </h2>
 <hr />
 <div class="row">
     <form method="post" id="form-edit">
