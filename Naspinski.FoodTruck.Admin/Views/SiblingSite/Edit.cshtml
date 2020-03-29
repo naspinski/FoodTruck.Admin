@@ -1,0 +1,58 @@
+﻿@model Naspinski.FoodTruck.Data.Distribution.Models.System.SiblingSiteModel
+<h2>
+    <span id="new-edit">@(Model.IsNew ? "New" : "Edit") </span>
+    Special
+    <a class="btn btn-default pull-right" asp-area="" asp-controller="Special" asp-action="Index">
+        <i class="glyphicon glyphicon-list"></i>
+        Sibling Site
+    </a>
+</h2>
+<hr />
+<div class="row">
+    <form method="post" id="form-edit">
+        <div class="col-md-6">
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="Name"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Url"></label>
+                <input asp-for="Url" class="form-control" />
+                <span asp-validation-for="Url" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-primary">
+                <i class="glyphicon glyphicon-floppy"></i>
+                Save
+            </button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+
+    <script>
+        $(document).ready(function () {
+            $('#form-edit').on('submit', function (e) {
+                if ($('#form-edit').valid()) {
+                    e.preventDefault();
+                    $.ajax('/SiblingSite/Edit', {
+                        type: 'POST',
+                        data: $('#form-edit').serialize(),
+                        success: function (data) {
+                            $.toast({ text: 'Saved', icon: 'success' })
+                            $('#new-edit').html("Edit");
+                            $('#Id').val(data.id);
+                        },
+                        error: function (data) {
+                            $.toast({ text: 'Unknown error occurred', hideAfter: false, icon: 'error' })
+                        }
+                    })
+                }
+            });
+        });
+    </script>
+}
