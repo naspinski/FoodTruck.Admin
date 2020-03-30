@@ -62,6 +62,12 @@ namespace Naspinski.FoodTruck.AdminWeb.Controllers
             return new StatusCodeResult((int)HttpStatusCode.NoContent);
         }
 
+        [Route("test")]
+        public IActionResult Test()
+        {
+            return Ok();
+        }
+
         [Route("notify")]
         [HttpPut]
         public IActionResult Notify()
