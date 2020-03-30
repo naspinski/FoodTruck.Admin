@@ -4,14 +4,15 @@
 @{
     var images = ViewData["Images"] as IEnumerable<SelectListItem>;
     var locations = ViewData["Locations"] as IEnumerable<SelectListItem>;
+    var count = -1;
 }
 <h2>Settings</h2>
 <hr />
 <form method="post" id="form-settings">
-    <div class="row">
         @foreach (string category in Model.Select(x => x.Category).Distinct())
         {
-            <div class="col-md-4">
+            count++;
+            <div class="col-md-4 clearfix">
                 <h3>@category</h3>
                 @foreach (var setting in Model.Where(x => !x.IsHidden && x.Category == category).OrderBy(x => x.Name))
                 {

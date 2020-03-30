@@ -139,7 +139,7 @@ namespace Naspinski.FoodTruck.AdminWeb.Controllers
         {
             var n = Environment.NewLine;
             return $"{_settings.Title} will be at {_event.Location.Name} today from {_event.BeginsTime} to { _event.EndsTime}{n}"
-                        + $"{n}unsubscribe from this location: {_azureSettings.SiteBaseUrl}api/u/{sub.Subscriber}/{Uri.EscapeDataString(sub.Location)}"
+                        + $"{n}unsubscribe from this location: {_azureSettings.SiteBaseUrl}api/u/{sub.Subscriber}---{Uri.EscapeDataString(sub.Location)}"
                         + $"{n}unsubscribe from all locations: {_azureSettings.SiteBaseUrl}api/u/{Uri.EscapeDataString(sub.Subscriber)}/";
         }
 

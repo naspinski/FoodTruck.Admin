@@ -15,6 +15,7 @@ using System.Linq;
 using static Naspinski.FoodTruck.Data.Constants;
 using Command = Naspinski.FoodTruck.Data.Access.Commands;
 using Query = Naspinski.FoodTruck.Data.Access.Queries;
+using S = Naspinski.FoodTruck.Data.Constants.SettingName;
 
 namespace Naspinski.FoodTruck.AdminWeb.Controllers
 {
@@ -36,9 +37,11 @@ namespace Naspinski.FoodTruck.AdminWeb.Controllers
         [HttpGet]
         public IActionResult Index()
         {
+            var exclude = new[] { S.ApplyText, S.ContactHeader, S.ContactPostHeader, S.ContactPreHeader, S.AutoNotificationDelayInMinutes };
+
             var _model = new Query.Settings.Get(_context).ExecuteAndReturnResults().Select(x => new Models.Settings.SettingModel(x));
             var model = new List<Models.Settings.SettingModel>();
-            foreach (var s in Seeds.Settings.Select(x => x.Name))
+            foreach (var s in Seeds.Settings.Where(x => !exclude.Contains(x.Name)).Select(x => x.Name))
             {
                 var setting = _model.FirstOrDefault(x => x.Name == s);
                 if (setting != null) model.Add(setting);
