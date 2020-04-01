@@ -35,8 +35,8 @@
                 </button>
                 <a asp-area="" asp-controller="Home" asp-action="Index" id="header-title" class="navbar-brand">@ViewData[S.Title]</a>
 
-                @*<a style="margin-top:.6em" class="btn btn-@(isOrderingOn ? "success" : "danger")"
-                   href="~/Settings/SwitchOrdering?turn=@(isOrderingOn ? "off" : "on")&returnUrl=@url">Ordering:@(isOrderingOn ? "on" : "off")</a>*@
+                <a style="margin-top:.6em" class="btn btn-@(isOrderingOn ? "success" : "danger")"
+                   href="~/Settings/SwitchOrdering?turn=@(isOrderingOn ? "off" : "on")&returnUrl=@url">Ordering:@(isOrderingOn ? "on" : "off")</a>
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
