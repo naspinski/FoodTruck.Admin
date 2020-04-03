@@ -39,7 +39,7 @@ namespace Naspinski.FoodTruck.AdminWeb.Controllers
         {
             var exclude = new[] { 
                 S.ApplyText, S.ContactHeader, S.ContactPostHeader, S.ContactPreHeader, S.AutoNotificationDelayInMinutes, //general
-                S.OrderConfirmationEmailSubject, S.OrderNotificationEmails, S.OrderNotificationPhoneNumbers, S.OrderServiceText, //square
+                //S.OrderConfirmationEmailSubject, S.OrderNotificationEmails, S.OrderNotificationPhoneNumbers, S.OrderServiceText, //square
             };
 
             var _model = new Query.Settings.Get(_context).ExecuteAndReturnResults().Select(x => new Models.Settings.SettingModel(x));
