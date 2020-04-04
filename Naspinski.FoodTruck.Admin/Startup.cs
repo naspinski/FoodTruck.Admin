@@ -28,7 +28,9 @@ namespace Naspinski.FoodTruck.AdminWeb
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton(Configuration.GetSection("AzureSettings").Get<AzureSettings>());
-            services.AddSingleton(Configuration.GetSection("ElmahSettings").Get<ElmahSettings>());
+
+            var elmah = Configuration.GetSection("ElmahSettings").Get<ElmahSettings>();
+            services.AddElmahIo(o => { o.ApiKey = elmah.ApiKey; o.LogId = elmah.LogId; });
 
             services.AddDbContext<FoodTruckContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("FoodTruckDb")));
@@ -62,7 +64,7 @@ namespace Naspinski.FoodTruck.AdminWeb
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, Initializer initializer, ElmahSettings elmahSettings)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, Initializer initializer)
         {
             if (env.IsDevelopment())
             {
@@ -74,9 +76,6 @@ namespace Naspinski.FoodTruck.AdminWeb
                 var options = new RewriteOptions().AddRedirectToHttps();
                 app.UseRewriter(options);
             }
-
-            if (!string.IsNullOrWhiteSpace(elmahSettings.ApiKey) && elmahSettings.LogId != null)
-                app.UseElmahIo(elmahSettings.ApiKey, elmahSettings.LogId);
 
             app.UseStaticFiles();
 

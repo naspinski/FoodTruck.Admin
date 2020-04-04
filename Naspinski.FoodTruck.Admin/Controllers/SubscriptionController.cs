@@ -14,7 +14,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Web;
 using static Naspinski.FoodTruck.Data.Constants;
 
 namespace Naspinski.FoodTruck.AdminWeb.Controllers
@@ -23,7 +22,6 @@ namespace Naspinski.FoodTruck.AdminWeb.Controllers
     public class SubscriptionController : _BaseFoodTruckController
     {
         private readonly AzureSettings _azureSettings;
-        private readonly ElmahSettings _elmahSettings;
         private SubscriptionHandler _handler;
         private FoodTruck.Data.Distribution.Handlers.Events.EventHandler _eventHandler;
 
@@ -31,10 +29,9 @@ namespace Naspinski.FoodTruck.AdminWeb.Controllers
         private string _twilioSid;
         private string _twilioPhone;
 
-        public SubscriptionController(FoodTruckContext context, AzureSettings azureSettings, ElmahSettings elmahSettings) : base(context)
+        public SubscriptionController(FoodTruckContext context, AzureSettings azureSettings) : base(context)
         {
             _azureSettings = azureSettings;
-            _elmahSettings = elmahSettings;
         }
 
         public override void OnActionExecuting(ActionExecutingContext context)
@@ -102,13 +99,13 @@ namespace Naspinski.FoodTruck.AdminWeb.Controllers
                         );
                         sentTo.Add(sub.Subscriber);
                     }
-                    catch (Exception ex) { ex.Ship(_elmahSettings.ApiKey, _elmahSettings.LogId, HttpContext); }
+                    catch (Exception ex) { ex.Ship(HttpContext); }
                 }
             }
 
             var twilio = new TwilioHelper(_twilioAuthToken, _twilioSid, _twilioPhone);
             if (!twilio.IsValid)
-                new Exception("twilio settings invalid").Ship(_azureSettings.SendgridApiKey, _elmahSettings.LogId, HttpContext);
+                new Exception("twilio settings invalid").Ship(HttpContext);
             else
             {
                 ISmsSender smsSender = new TwilioSmsSender(twilio);
@@ -122,7 +119,7 @@ namespace Naspinski.FoodTruck.AdminWeb.Controllers
                             smsSender.Send(twilio.Phone, $"+1{sub.Subscriber}", SubscriptionMessage(_event, sub));
                             sentTo.Add(sub.Subscriber);
                         }
-                        catch (Exception ex) { ex.Ship(_elmahSettings.ApiKey, _elmahSettings.LogId, HttpContext); }
+                        catch (Exception ex) { ex.Ship(HttpContext); }
                     }
                 }
             }
@@ -154,7 +151,7 @@ namespace Naspinski.FoodTruck.AdminWeb.Controllers
         private void Log(string message)
         {
             var _event = new LogEvent(message);
-            _event.Ship(_elmahSettings.ApiKey, _elmahSettings.LogId, this.HttpContext);
+            _event.Ship(this.HttpContext);
         }
     }
 
