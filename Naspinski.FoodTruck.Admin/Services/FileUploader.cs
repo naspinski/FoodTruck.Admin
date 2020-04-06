@@ -19,42 +19,34 @@ namespace Naspinski.FoodTruck.AdminWeb.Services
             }
             else
             {
-                try
+                CloudStorageAccount storageAccount = new CloudStorageAccount(new Microsoft.WindowsAzure.Storage.Auth.StorageCredentials(azureStorageAccount, azureStoragePassword), true);
+
+                CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
+                CloudBlobContainer container = blobClient.GetContainerReference(containerName);
+                await container.CreateIfNotExistsAsync();
+
+                CloudBlockBlob blockBlob = container.GetBlockBlobReference(file.FileName);
+
+                fileName = string.IsNullOrWhiteSpace(fileName) ? file.FileName : Path.GetFileNameWithoutExtension(fileName);
+
+                using (var reader = new StreamReader(file.OpenReadStream(), true))
                 {
-                    CloudStorageAccount storageAccount = new CloudStorageAccount(new Microsoft.WindowsAzure.Storage.Auth.StorageCredentials(azureStorageAccount, azureStoragePassword), true);
-
-                    CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
-                    CloudBlobContainer container = blobClient.GetContainerReference(containerName);
-                    await container.CreateIfNotExistsAsync();
-
-                    CloudBlockBlob blockBlob = container.GetBlockBlobReference(file.FileName);
-
-                    fileName = string.IsNullOrWhiteSpace(fileName) ? file.FileName : Path.GetFileNameWithoutExtension(fileName);
-
-                    using (var reader = new StreamReader(file.OpenReadStream(), true))
+                    if (!overwrite)
                     {
-                        if (!overwrite)
+                        var count = 1;
+                        while (await blockBlob.ExistsAsync())
                         {
-                            var count = 1;
-                            while (await blockBlob.ExistsAsync())
-                            {
-                                fileName = $"{Path.GetFileNameWithoutExtension(fileName)}[{count++}]{Path.GetExtension(file.FileName)}";
-                            }
+                            fileName = $"{Path.GetFileNameWithoutExtension(fileName)}[{count++}]{Path.GetExtension(file.FileName)}";
                         }
-                        else
-                            fileName = $"{Path.GetFileNameWithoutExtension(fileName)}{Path.GetExtension(file.FileName)}";
-
-                        blockBlob = container.GetBlockBlobReference(fileName);
-                        await blockBlob.UploadFromStreamAsync(reader.BaseStream);
                     }
+                    else
+                        fileName = $"{Path.GetFileNameWithoutExtension(fileName)}{Path.GetExtension(file.FileName)}";
 
-                    return blockBlob.Uri;
+                    blockBlob = container.GetBlockBlobReference(fileName);
+                    await blockBlob.UploadFromStreamAsync(reader.BaseStream);
                 }
-                catch (IOException ex)
-                {
-                    modelState.AddModelError(file.Name, $"The file upload failed. Please contact the Help Desk for support.");
-                    // Log the exception
-                }
+
+                return blockBlob.Uri;
             }
 
             return new Uri("error");

@@ -12,6 +12,9 @@ using Naspinski.Messaging.Sms.Twilio;
 using System.Linq;
 using Microsoft.AspNetCore.SignalR;
 using Naspinski.FoodTruck.AdminWeb.SignalR;
+using Naspinski.FoodTruck.Data.Distribution.Handlers.Menu;
+using static Naspinski.FoodTruck.Data.Constants;
+using Naspinski.FoodTruck.Data.Distribution.Models.System;
 
 namespace Naspinski.FoodTruck.AdminWeb.Controllers
 {
@@ -77,9 +80,11 @@ namespace Naspinski.FoodTruck.AdminWeb.Controllers
         
         private void DoNotification(OrderModel order)
         {
+            var isTextOn = new SettingHandler(_context).Get(new[] { SettingName.IsTextOn }).FirstOrDefault().Value.ToString().ToUpper().Equals("true", StringComparison.OrdinalIgnoreCase);
+
             Parallel.Invoke(
                 () => NotificationEmail(order),
-                () => NotificationText(order)
+                () => { if (isTextOn) { NotificationText(order); } }
             );
             _handler.Notify(order.Id);
         }
@@ -88,12 +93,20 @@ namespace Naspinski.FoodTruck.AdminWeb.Controllers
         {
             DoNotification(_handler.Get(id, _settings.TimeZoneOffsetFromUtcInHours));
         }
+        
+        private string ReadyText
+        {
+            get
+            {
+                return $"Your {_settings.Title} order is ready to be picked up!";
+            }
+        }
 
         private void NotificationEmail(OrderModel order)
         {
             EmailSender.Send(_azureSettings.SendgridApiKey,
                 $"{_settings.Title} - Order Ready",
-                $"{(string.IsNullOrWhiteSpace(order.Name) ? order.Email : order.Name)} your order is ready to be picked up!",
+                ReadyText,
                 order.Email, _settings.ContactEmail);
         }
 
@@ -102,8 +115,7 @@ namespace Naspinski.FoodTruck.AdminWeb.Controllers
             if (!string.IsNullOrWhiteSpace(order.Phone) && _settings.IsTwilioValid)
             {
                 ISmsSender smsSender = new TwilioSmsSender(_settings.TwilioSid, _settings.TwilioAuthToken);
-                smsSender.Send(_settings.TwilioPhoneNumber, order.Phone, 
-                    $"{(string.IsNullOrWhiteSpace(order.Name) ? order.Email : order.Name)} your {_settings.Title} order is ready to be picked up!");
+                smsSender.Send(_settings.TwilioPhoneNumber, order.Phone, ReadyText);
             }
         }
 
