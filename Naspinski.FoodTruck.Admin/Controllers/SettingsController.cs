@@ -73,7 +73,8 @@ namespace Naspinski.FoodTruck.AdminWeb.Controllers
         [HttpGet]
         public IActionResult SwitchOrdering(string turn, string returnUrl)
         {
-            var setting = new Models.Settings.SettingModel() { Name = SettingName.IsOrderingOn, Value = turn.ToUpper() == "ON" ? true.ToString() : false.ToString() };
+            var setting = new SettingHandler(_context).Get(new[] { SettingName.IsOrderingOn }).FirstOrDefault();
+            setting.Value = turn.ToUpper() == "ON" ? true.ToString() : false.ToString();
             new Command.Settings.Update(_context, User.Identity.Name, setting.ToModel()).Execute();
             return Redirect($"https://{returnUrl}");
         }

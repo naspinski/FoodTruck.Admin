@@ -6,9 +6,15 @@
     var locations = ViewData["Locations"] as IEnumerable<SelectListItem>;
     var count = -1;
 }
-<h2>Settings</h2>
-<hr />
-<form method="post" id="form-settings">
+    <form method="post" id="form-settings">
+        <h2>
+            Settings
+            <button type="submit" id="frm-sub-top" class="btn btn-primary pull-right">
+                <i class="glyphicon glyphicon-floppy"></i>
+                Save
+            </button>
+        </h2>
+        <hr />
         @foreach (string category in Model.Select(x => x.Category).Distinct())
         {
             count++;
@@ -30,7 +36,8 @@
                                     <option value="">-</option>
                                     @foreach (var option in images)
                                     {
-                                        <option selected="@(option.Value == setting.Value)" value="@option.Value">@option.Text</option>}
+                                        <option selected="@(option.Value == setting.Value)" value="@option.Value">@option.Text</option>
+                                    }
                                 </select>
                                 break;
                             case Naspinski.FoodTruck.Data.Constants.DataType.DropdownId:
@@ -40,7 +47,8 @@
                                     {
                                         foreach (var option in ViewData[setting.Name + "List"] as IEnumerable<SelectListItem>)
                                         {
-                                            <option selected="@(option.Value == setting.Value)" value="@option.Value">@option.Text</option>}
+                                            <option selected="@(option.Value == setting.Value)" value="@option.Value">@option.Text</option>
+                                        }
                                     }
                                     }
                                 </select>
@@ -81,12 +89,11 @@
                 }
             </div>
         }
-    </div>
-    <button type="submit" id="frm-sub" class="btn btn-primary">
-        <i class="glyphicon glyphicon-floppy"></i>
-        Save
-    </button>
-</form>
+        <button type="submit" id="frm-sub" class="btn btn-primary">
+            <i class="glyphicon glyphicon-floppy"></i>
+            Save
+        </button>
+    </form>
 
 @section Scripts {
 
