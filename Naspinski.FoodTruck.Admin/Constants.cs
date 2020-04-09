@@ -46,12 +46,12 @@ namespace Naspinski.FoodTruck.AdminWeb
                         Links = new List<Link>()
                         {
                             new Link() { Text = "Site Settings", CssClass = "btn btn-primary btn-lg btn-block", Controller = "Settings", Action = "Index", Glyphicon = "cog"},
-                            new Link() { Text = "Profile", CssClass = "btn btn-default btn-lg btn-block", Controller = "Manage", Action = "Index", Glyphicon = "user"},
-                            new Link() { Text = "Create User", CssClass = "btn btn-primary btn-lg btn-block", Controller = "Account", Action = "Register", Glyphicon = "plus-sign"},
-                            new Link() { Text = "Images", CssClass = "btn btn-default btn-lg btn-block", Controller = "Images", Action = "Index", Glyphicon = "picture"},
-                            new Link() { Text = "Documents", CssClass = "btn btn-primary btn-lg btn-block", Controller = "Documents", Action = "Index", Glyphicon = "paperclip"},
-                            new Link() { Text = "Delivery Limits", CssClass = "btn btn-default btn-lg btn-block", Controller = "DeliveryDestinations", Action = "Index", Glyphicon = "send"},
-                            new Link() { Text = "Sibling Sites", CssClass = "btn btn-primary btn-lg btn-block", Controller = "SiblingSite", Action = "Index", Glyphicon = "list"},
+                            new Link() { Text = "Create User", CssClass = "btn btn-default btn-lg btn-block", Controller = "Account", Action = "Register", Glyphicon = "plus-sign"},
+                            new Link() { Text = "Images", CssClass = "btn btn-primary btn-lg btn-block", Controller = "Images", Action = "Index", Glyphicon = "picture"},
+                            new Link() { Text = "Documents", CssClass = "btn btn-default btn-lg btn-block", Controller = "Documents", Action = "Index", Glyphicon = "paperclip"},
+                            //new Link() { Text = "Delivery Limits", CssClass = "btn btn-default btn-lg btn-block", Controller = "DeliveryDestinations", Action = "Index", Glyphicon = "send"},
+                            new Link() { Text = "Square Locations", CssClass = "btn btn-primary btn-lg btn-block", Controller = "SquareLocation", Action = "Index", Glyphicon = "list"},
+                            new Link() { Text = "Sibling Sites", CssClass = "btn btn-default btn-lg btn-block", Controller = "SiblingSite", Action = "Index", Glyphicon = "list"},
                         }
                     },
                     new LinkGroup()

@@ -9,16 +9,16 @@ using Naspinski.FoodTruck.Data.Distribution.Models.System;
 namespace Naspinski.FoodTruck.AdminWeb.Controllers
 {
     [Authorize]
-    public class SiblingSiteController : _BaseFoodTruckController
+    public class SquareLocationController : _BaseFoodTruckController
     {
-        private ICrudHandler<SiblingSiteModel, FoodTruckContext, SiblingSiteModel> _handler;
+        private ICrudHandler<SquareLocationModel, FoodTruckContext, SquareLocationModel> _handler;
 
-        public SiblingSiteController(FoodTruckContext context) : base(context) { }
+        public SquareLocationController(FoodTruckContext context) : base(context) { }
 
         public override void OnActionExecuting(ActionExecutingContext context)
         {
             base.OnActionExecuting(context);
-            _handler = new SiblingSiteHandler(_context, _user);
+            _handler = new SquareLocationHandler(_context, _user);
         }
 
         [HttpGet]
@@ -43,7 +43,7 @@ namespace Naspinski.FoodTruck.AdminWeb.Controllers
         }
 
         [HttpPost]
-        public IActionResult Edit(SiblingSiteModel model)
+        public IActionResult Edit(SquareLocationModel model)
         {
             return Json(_handler.Upsert(model));
         }

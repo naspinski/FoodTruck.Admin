@@ -1,0 +1,69 @@
+﻿@using System.Collections.Generic
+@model IEnumerable<Naspinski.FoodTruck.Data.Distribution.Models.System.SquareLocationModel>
+<h2>
+    Square Locations
+    <a class="btn btn-default" asp-area="" asp-controller="SquareLocation" asp-action="Edit">
+        <i class="glyphicon glyphicon-plus"></i>
+    </a>
+</h2>
+<hr />
+<ul class="list-group">
+    @if (!Model.Any())
+    {
+        <li class="list-group-item">
+            no Square Locations
+            <a asp-area="" asp-controller="SquareLocation" asp-action="Edit">add a Square Location</a>
+        </li>   }
+    @foreach (var item in Model)
+{
+<li class="list-group-item" id="item-@item.Id">
+    <h4>
+        <span class="pull-right">
+            <a class="btn btn-default item-delete" data-id="@item.Id" data-restore="false">
+                <i class="glyphicon glyphicon-trash"></i>
+            </a>
+            <a class="btn btn-default" asp-area="" asp-controller="SquareLocation" asp-action="Edit" asp-route-id="@item.Id">
+                <i class="glyphicon glyphicon-pencil"></i>
+            </a>
+        </span>
+        <span class="text-success">@item.Name</span><br />
+    </h4>
+    <ul>
+        <li>
+            <strong>Application ID:</strong>
+            @item.ApplicationId
+        </li>
+        <li>
+            <strong>Access Token:</strong>
+            @item.AccessToken
+        </li>
+        <li>
+            <strong>Location ID:</strong>
+            @item.LocationId
+        </li>
+    </ul>
+</li>
+}
+</ul>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('.item-delete').on('click', function (e) {
+                const id = $(this).data('id');
+                const restore = $(this).data('restore');
+                e.preventDefault();
+                $.ajax('/SquareLocation/Delete/' + id + '?isRestore=' + restore, {
+                    type: 'Delete',
+                    success: function (data) {
+                        $.toast({ text: 'Deleted', icon: 'success' })
+                        $('#item-' + id).remove();
+                    },
+                    error: function (data) {
+                        $.toast({ text: 'Unknown error occurred', hideAfter: false, icon: 'error' })
+                    }
+                })
+            });
+        });
+    </script>
+}
