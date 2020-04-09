@@ -1,9 +1,15 @@
 ﻿@using System.Collections.Generic
 @model IEnumerable<Naspinski.FoodTruck.Data.Distribution.Models.System.SiblingSiteModel>
+@{
+    var deleted = ViewData["Deleted"].ToString() == "False";
+}
 <h2>
     Sibling Sites
     <a class="btn btn-default" asp-area="" asp-controller="SiblingSite" asp-action="Edit">
         <i class="glyphicon glyphicon-plus"></i>
+    </a>
+    <a class="btn btn-default pull-right" asp-area="" asp-controller="SiblingSite" asp-action="Index" asp-route-deleted="@(deleted)">
+        @(deleted ? "Deleted" : "Active") Items
     </a>
 </h2>
 <hr />
@@ -13,24 +19,27 @@
         <li class="list-group-item">
             no sibling sites
             <a asp-area="" asp-controller="SiblingSite" asp-action="Edit">add a Sibling Site</a>
-        </li>   }
-    @foreach (var item in Model)
-{
-<li class="list-group-item" id="item-@item.Id">
-    <h4>
-        <span class="pull-right">
-            <a class="btn btn-default item-delete" data-id="@item.Id" data-restore="false">
-                <i class="glyphicon glyphicon-trash"></i>
-            </a>
-            <a class="btn btn-default" asp-area="" asp-controller="SiblingSite" asp-action="Edit" asp-route-id="@item.Id">
-                <i class="glyphicon glyphicon-pencil"></i>
-            </a>
-        </span>
-        <span class="text-success">@item.Name</span><br />
-        @item.Url
-    </h4>
-</li>
+        </li>
 }
+    @foreach (var item in Model)
+    {
+        <li class="list-group-item" id="item-@item.Id">
+            <h4>
+                <span class="pull-right">
+                    <span class="pull-right">
+                        <a class="btn btn-default item-delete" data-id="@item.Id" data-restore="@item.IsDeleted">
+                            <i class="glyphicon @(item.IsDeleted ? "glyphicon-refresh" : "glyphicon-trash")"></i>
+                        </a>
+                        <a class="btn btn-default" asp-area="" asp-controller="Menu" asp-action="Edit" asp-route-id="@item.Id">
+                            <i class="glyphicon glyphicon-pencil"></i>
+                        </a>
+                    </span>
+                </span>
+                <span class="text-success">@item.Name</span><br />
+                @item.Url
+            </h4>
+        </li>
+    }
 </ul>
 
 @section Scripts {

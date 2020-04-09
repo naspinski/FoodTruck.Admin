@@ -1,9 +1,15 @@
 ﻿@using System.Collections.Generic
 @model IEnumerable<Naspinski.FoodTruck.Data.Distribution.Models.System.SquareLocationModel>
+@{
+    var deleted = ViewData["Deleted"].ToString() == "False";
+}
 <h2>
     Square Locations
     <a class="btn btn-default" asp-area="" asp-controller="SquareLocation" asp-action="Edit">
         <i class="glyphicon glyphicon-plus"></i>
+    </a>
+    <a class="btn btn-default pull-right" asp-area="" asp-controller="SquareLocation" asp-action="Index" asp-route-deleted="@(deleted)">
+        @(deleted ? "Deleted" : "Active") Items
     </a>
 </h2>
 <hr />
@@ -13,37 +19,40 @@
         <li class="list-group-item">
             no Square Locations
             <a asp-area="" asp-controller="SquareLocation" asp-action="Edit">add a Square Location</a>
-        </li>   }
-    @foreach (var item in Model)
-{
-<li class="list-group-item" id="item-@item.Id">
-    <h4>
-        <span class="pull-right">
-            <a class="btn btn-default item-delete" data-id="@item.Id" data-restore="false">
-                <i class="glyphicon glyphicon-trash"></i>
-            </a>
-            <a class="btn btn-default" asp-area="" asp-controller="SquareLocation" asp-action="Edit" asp-route-id="@item.Id">
-                <i class="glyphicon glyphicon-pencil"></i>
-            </a>
-        </span>
-        <span class="text-success">@item.Name</span><br />
-    </h4>
-    <ul>
-        <li>
-            <strong>Application ID:</strong>
-            @item.ApplicationId
         </li>
-        <li>
-            <strong>Access Token:</strong>
-            @item.AccessToken
-        </li>
-        <li>
-            <strong>Location ID:</strong>
-            @item.LocationId
-        </li>
-    </ul>
-</li>
 }
+    @foreach (var item in Model)
+    {
+        <li class="list-group-item" id="item-@item.Id">
+            <h4>
+                <span class="pull-right">
+                    <span class="pull-right">
+                        <a class="btn btn-default item-delete" data-id="@item.Id" data-restore="@item.IsDeleted">
+                            <i class="glyphicon @(item.IsDeleted ? "glyphicon-refresh" : "glyphicon-trash")"></i>
+                        </a>
+                        <a class="btn btn-default" asp-area="" asp-controller="Menu" asp-action="Edit" asp-route-id="@item.Id">
+                            <i class="glyphicon glyphicon-pencil"></i>
+                        </a>
+                    </span>
+                </span>
+                <span class="text-success">@item.Name</span><br />
+            </h4>
+            <ul>
+                <li>
+                    <strong>Application ID:</strong>
+                    @item.ApplicationId
+                </li>
+                <li>
+                    <strong>Access Token:</strong>
+                    @item.AccessToken
+                </li>
+                <li>
+                    <strong>Location ID:</strong>
+                    @item.LocationId
+                </li>
+            </ul>
+        </li>
+    }
 </ul>
 
 @section Scripts {

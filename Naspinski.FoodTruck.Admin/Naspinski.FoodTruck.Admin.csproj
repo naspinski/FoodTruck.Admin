@@ -17,10 +17,10 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.3" PrivateAssets="All" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.2" PrivateAssets="All" />
-    <PackageReference Include="Naspinski.FoodTruck.Data.Distribution" Version="1.0.20200409.120902" />
+    <PackageReference Include="Naspinski.FoodTruck.Data.Distribution" Version="1.0.20200409.123517" />
     <PackageReference Include="Naspinski.Data" Version="1.0.20200327.134940" />
-    <PackageReference Include="Naspinski.FoodTruck.Data" Version="1.0.20200409.120902" />
-    <PackageReference Include="Naspinski.FoodTruck.Data.Access" Version="1.0.20200409.120902" />
+    <PackageReference Include="Naspinski.FoodTruck.Data" Version="1.0.20200409.123517" />
+    <PackageReference Include="Naspinski.FoodTruck.Data.Access" Version="1.0.20200409.123517" />
     <PackageReference Include="Naspinski.Maps" Version="1.0.20200327.135151" />
     <PackageReference Include="Naspinski.Messaging" Version="1.0.20200327.135132" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
