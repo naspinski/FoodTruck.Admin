@@ -1,0 +1,11 @@
+{
+  "name": "Naspinski.FoodTruck.Admin",
+  "version": "1.0.0",
+  "main": "",
+  "repository": "https://github.com/naspinski/FoodTruck.Admin",
+  "author": "Stan Naspinski",
+  "license": "MIT",
+  "dependencies": {
+    "jquery": "^3.5.0"
+  }
+}
