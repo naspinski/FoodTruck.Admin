@@ -52,7 +52,6 @@ namespace Naspinski.FoodTruck.AdminWeb.Controllers
         public IEnumerable<OrderModel> Get(DateTime? from = null, DateTime? to = null, bool deleted = false, bool sandbox = false, bool showMade = false)
         {
             return _handler.GetAll(from.HasValue ? from.Value : DateTime.Now.Date, to, deleted, sandbox, showMade, _settings.TimeZoneOffsetFromUtcInHours)
-                .Where(x => x.Updated != null)
                 .OrderBy(x => x.Created);
         }
         
