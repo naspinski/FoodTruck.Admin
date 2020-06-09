@@ -53,14 +53,16 @@ namespace Naspinski.FoodTruck.AdminWeb.Controllers
             new SquareWebHook(JsonConvert.SerializeObject(model)).Ship(this.HttpContext);
             if(model?.Data?.Object?.OrderFullfillmentUpdated?.FullfillmentUpdate?[0] != null)
             {
+                var completedStates = new[] { "PREPARED", "COMPLETED" };
                 var fullfillment = model.Data.Object.OrderFullfillmentUpdated.FullfillmentUpdate[0];
-                if(fullfillment.NewState != fullfillment.OldState && fullfillment.NewState.Equals("PREPARED", StringComparison.InvariantCultureIgnoreCase))
+                if(completedStates.Contains(fullfillment.NewState.ToUpper()))
                 {
                     var _order = _context.Orders.SingleOrDefault(x => x.SquareOrderId == model.Data.Object.OrderFullfillmentUpdated.OrderId);
-                    if (_order != null)
+                    if (_order != null && !_order.Made.HasValue)
                     {
                         _handler.Made(_order);
                         Notification.DoNotification(_context, _settings, _azureSettings, _order.Id, _handler);
+                        new SquareWebHook($"Notification sent for order: {_order.Id}").Ship(this.HttpContext);
                     }
                 }
             }
