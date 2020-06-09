@@ -15,7 +15,7 @@ namespace Naspinski.FoodTruck.Admin.Helpers
 {
     public static class Notification
     {
-        public static void DoNotification(FoodTruckContext context, AdminAppSettings settings, AzureSettings azureSettings, OrderModel order, OrderHandler orderHandler = null)
+        public static void DoNotification(FoodTruckContext context, AdminAppSettings settings, AzureSettings azureSettings, OrderModel order, OrderHandler orderHandler)
         {
             orderHandler = orderHandler ?? new OrderHandler(context, "system");
             var isTextOn = new SettingHandler(context).Get(new[] { SettingName.IsTextOn }).FirstOrDefault().Value.ToString().ToUpper().Equals("true", StringComparison.OrdinalIgnoreCase);
@@ -27,7 +27,7 @@ namespace Naspinski.FoodTruck.Admin.Helpers
             orderHandler.Notify(order.Id);
         }
 
-        public static void DoNotification(FoodTruckContext context, AdminAppSettings settings, AzureSettings azureSettings, int id, OrderHandler orderHandler = null)
+        public static void DoNotification(FoodTruckContext context, AdminAppSettings settings, AzureSettings azureSettings, int id, OrderHandler orderHandler)
         {
             orderHandler = orderHandler ?? new OrderHandler(context, "system");
             DoNotification(context, settings, azureSettings, orderHandler.Get(id, settings.TimeZoneOffsetFromUtcInHours), orderHandler);

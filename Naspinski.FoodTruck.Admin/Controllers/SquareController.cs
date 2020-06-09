@@ -17,6 +17,7 @@ namespace Naspinski.FoodTruck.AdminWeb.Controllers
     public class SquareController : _BaseFoodTruckController
     {
         private readonly AzureSettings _azureSettings;
+        private FoodTruck.Data.Distribution.Handlers.Payment.OrderHandler _handler;
 
         public SquareController(FoodTruckContext context, AzureSettings azureSettings) : base(context)
         {
@@ -26,6 +27,7 @@ namespace Naspinski.FoodTruck.AdminWeb.Controllers
         public override void OnActionExecuting(ActionExecutingContext context)
         {
             base.OnActionExecuting(context);
+            _handler = new FoodTruck.Data.Distribution.Handlers.Payment.OrderHandler(_context, _user);
         }
 
         [HttpPost]
@@ -55,8 +57,11 @@ namespace Naspinski.FoodTruck.AdminWeb.Controllers
                 if(fullfillment.NewState != fullfillment.OldState && fullfillment.NewState.Equals("PREPARED", StringComparison.InvariantCultureIgnoreCase))
                 {
                     var _order = _context.Orders.SingleOrDefault(x => x.SquareOrderId == model.Data.Object.OrderFullfillmentUpdated.OrderId);
-                    if(_order != null)
-                        Notification.DoNotification(_context, _settings, _azureSettings, _order.Id);
+                    if (_order != null)
+                    {
+                        _handler.Made(_order);
+                        Notification.DoNotification(_context, _settings, _azureSettings, _order.Id, _handler);
+                    }
                 }
             }
             return Ok();
