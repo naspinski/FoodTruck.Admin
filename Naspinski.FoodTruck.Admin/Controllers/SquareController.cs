@@ -50,7 +50,6 @@ namespace Naspinski.FoodTruck.AdminWeb.Controllers
         [Route("")]
         public ActionResult OrderReady([FromBody]SquareWebhookRequest model)
         {
-            new SquareWebHook(JsonConvert.SerializeObject(model)).Ship(this.HttpContext);
             if(model?.Data?.Object?.OrderFullfillmentUpdated?.FullfillmentUpdate?[0] != null)
             {
                 var completedStates = new[] { "PREPARED", "COMPLETED" };
@@ -62,7 +61,6 @@ namespace Naspinski.FoodTruck.AdminWeb.Controllers
                     {
                         _handler.Made(_order);
                         Notification.DoNotification(_context, _settings, _azureSettings, _order.Id, _handler);
-                        new SquareWebHook($"Notification sent for order: {_order.Id}").Ship(this.HttpContext);
                     }
                 }
             }
