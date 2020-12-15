@@ -1,48 +1,38 @@
 ﻿@using System.Collections.Generic
 @model IEnumerable<Naspinski.FoodTruck.Data.Distribution.Models.Specials.SpecialModel>
-@{
-    var deleted = ViewData["Deleted"].ToString() == "False";
-}
-<h2>
-    @(!deleted ? "Deleted" : "") Specials
-    <a class="btn btn-default" asp-area="" asp-controller="Special" asp-action="Edit">
-        <i class="glyphicon glyphicon-plus"></i>
-    </a>
-    <a class="btn btn-default pull-right" asp-area="" asp-controller="Special" asp-action="Index" asp-route-deleted="@(deleted)">
-        @(deleted ? "Deleted" : "Active") Specials
-    </a>
-</h2>
-<hr />
+@using Naspinski.FoodTruck.Admin.Models
+@await Html.PartialAsync("_IndexHeader", new IndexHeaderModel("Special", "Specials"))
 <ul class="list-group">
     @if (!Model.Any())
     {
         <li class="list-group-item">
             no specials
-            <a asp-area="" asp-controller="Special" asp-action="Edit">add a Special</a>
-        </li>   }
+            <a asp-area="" asp-controller="Special" asp-action="Edit">add Special</a>
+        </li>
+}
     @foreach (var item in Model)
     {
-<li class="list-group-item" id="item-@item.Id">
-    <h4>
-        <span class="pull-right">
-            <a class="btn btn-default item-delete" data-id="@item.Id" data-restore="@item.IsDeleted">
-                <i class="glyphicon @(item.IsDeleted ? "glyphicon-refresh" : "glyphicon-trash")"></i>
-            </a>
-            <a class="btn btn-default" asp-area="" asp-controller="Special" asp-action="Edit" asp-route-id="@item.Id">
-                <i class="glyphicon glyphicon-pencil"></i>
-            </a>
-        </span>
-        <span class="text-success">@item.Name</span><br />
-        @item.Description
-    </h4>
-    @item.DayList<br /> 
-    @item.BeginsString
-    @if (item.Begins.HasValue && item.Ends.HasValue)
-    {<text> - </text>}
-    @item.EndsString
-    @if (item.ToModel().IsAllDay)
-    {<text>ALL DAY</text>}
-</li>
+        <li class="list-group-item" id="item-@item.Id">
+            <h4>
+                <span class="pull-right">
+                    <a class="btn btn-default item-delete" data-id="@item.Id" data-restore="@item.IsDeleted">
+                        <i class="glyphicon @(item.IsDeleted ? "glyphicon-refresh" : "glyphicon-trash")"></i>
+                    </a>
+                    <a class="btn btn-default" asp-area="" asp-controller="Special" asp-action="Edit" asp-route-id="@item.Id">
+                        <i class="glyphicon glyphicon-pencil"></i>
+                    </a>
+                </span>
+                <span class="text-success">@item.Name</span><br />
+                @item.Description
+            </h4>
+            @item.DayList<br />
+            @item.BeginsString
+            @if (item.Begins.HasValue && item.Ends.HasValue)
+            {<text> - </text>}
+            @item.EndsString
+            @if (item.ToModel().IsAllDay)
+            {<text>ALL DAY</text>}
+        </li>
     }
 </ul>
 

@@ -1,25 +1,15 @@
 ﻿@using System.Collections.Generic
 @model IEnumerable<Naspinski.FoodTruck.Data.Distribution.Models.Events.LocationModel>
-@{
-    var deleted = ViewData["Deleted"].ToString() == "False";
-}
-<h2>
-    @(!deleted ? "Deleted" : "") Locations
-    <a class="btn btn-default" asp-area="" asp-controller="Location" asp-action="Edit">
-        <i class="glyphicon glyphicon-plus"></i>
-    </a>
-    <a class="btn btn-default pull-right" asp-area="" asp-controller="Location" asp-action="Index" asp-route-deleted="@(deleted)">
-        @(deleted ? "Deleted" : "Active") Items
-    </a>
-</h2>
-<hr />
+@using Naspinski.FoodTruck.Admin.Models
+@await Html.PartialAsync("_IndexHeader", new IndexHeaderModel("Location", "Locations"))
 <ul class="list-group">
     @if (!Model.Any())
     {
         <li class="list-group-item">
             no locations
-            <a asp-area="" asp-controller="Location" asp-action="Edit">add a Location</a>
-        </li>   }
+            <a asp-area="" asp-controller="Location" asp-action="Edit">add Location</a>
+        </li>
+}
     @foreach (var item in Model)
     {
         <li class="list-group-item" id="item-@item.Id">

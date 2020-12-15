@@ -1,0 +1,14 @@
+﻿@model Naspinski.FoodTruck.Admin.Models.IndexHeaderModel
+@{
+    var deleted = ViewData["Deleted"].ToString() == "False";
+}
+<h2>
+    @(!deleted ? "Deleted" : "") @Model.Text
+    <a class="btn btn-default" asp-area="" asp-controller="@Model.Controller" asp-action="Edit">
+        <i class="glyphicon glyphicon-plus"></i>
+    </a>
+    <a class="btn btn-default pull-right" asp-area="" asp-controller="@Model.Controller" asp-action="Index" asp-route-deleted="@(deleted)">
+        @(deleted ? "Deleted" : "Active") @Model.Text
+    </a>
+</h2>
+<hr />

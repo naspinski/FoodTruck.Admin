@@ -1,33 +1,17 @@
 ﻿@using System.Collections.Generic
 @model IEnumerable<Naspinski.FoodTruck.Data.Distribution.Models.Menu.PriceTypeModel>
-
-<h2>
-    Price Types
-    <a class="btn btn-default" asp-area="" asp-controller="PriceType" asp-action="Edit">
-        <i class="glyphicon glyphicon-plus"></i>
-    </a>
-    @if (ViewData["Deleted"].ToString() == "False")
-    {
-        <a class="btn btn-default pull-right" asp-area="" asp-controller="PriceType" asp-action="Index" asp-route-deleted="true">
-            Deleted Items
-        </a>
-    }
-    else
-    {
-        <a class="btn btn-default pull-right" asp-area="" asp-controller="PriceType" asp-action="Index">
-            Active Items
-        </a>
-    }
-</h2>
-<hr />
+@using Naspinski.FoodTruck.Admin.Models
+@await Html.PartialAsync("_IndexHeader", new IndexHeaderModel("PriceType", "Price Types"))
 
 <ul class="list-group">
-    @if (!Model.Any()) {  
-    <li class="list-group-item">
-        no price types
-        <a asp-area="" asp-controller="PriceType" asp-action="Edit">add a Price Type</a>
-    </li> }
-    @foreach(var item in Model)
+    @if (!Model.Any())
+    {
+        <li class="list-group-item">
+            no price types
+            <a asp-area="" asp-controller="PriceType" asp-action="Edit">add Price Type</a>
+        </li>
+   }
+    @foreach (var item in Model)
     {
         <li class="list-group-item" id="item-@item.Id">
             <h4>
@@ -38,7 +22,7 @@
                     <a class="btn btn-default" asp-area="" asp-controller="PriceType" asp-action="Edit" asp-route-id="@item.Id">
                         <i class="glyphicon glyphicon-pencil"></i>
                     </a>
-                </span>                
+                </span>
                 [@item.SortOrder]
                 @item.Name
             </h4>

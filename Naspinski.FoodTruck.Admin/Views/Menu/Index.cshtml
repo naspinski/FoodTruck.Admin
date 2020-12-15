@@ -1,69 +1,60 @@
 ﻿@using System.Collections.Generic
 @model Naspinski.FoodTruck.Data.Distribution.Models.Menu.MenuItemsModel
-@{ 
-    var deleted = ViewData["Deleted"].ToString() == "False";
-}
+@using Naspinski.FoodTruck.Admin.Models
+@await Html.PartialAsync("_IndexHeader", new IndexHeaderModel("Menu", "Menu Items"))
 
-<h2>
-    @(!deleted ? "Deleted" : "") Menu
-    <a class="btn btn-default" asp-area="" asp-controller="Menu" asp-action="Edit">
-        <i class="glyphicon glyphicon-plus"></i>
-    </a>
-    <a class="btn btn-default pull-right" asp-area="" asp-controller="Menu" asp-action="Index" asp-route-deleted="@(deleted)">
-        @(deleted ? "Deleted" : "Active") Items
-    </a>
-</h2>
-<hr />
-
-    @if (!Model.Categories.SelectMany(x => x.MenuItems).Any()) {
+@if (!Model.Categories.SelectMany(x => x.MenuItems).Any())
+{
     <li class="list-group-item">
         no menu items
-        <a asp-area="" asp-controller="Menu" asp-action="Edit">add a menu item</a>
-    </li> } else {
-            @foreach (var category in Model.Categories)
+        <a asp-area="" asp-controller="Menu" asp-action="Edit">add menu item</a>
+    </li> }
+else
+{
+    @foreach (var category in Model.Categories)
+    {
+        <h3>
+            @(category.Id == 0 ? "[no category]" : $"[{category.SortOrder}] {category.Name}")
+            @if (category.Id != 0)
             {
-                <h3>
-                    @(category.Id == 0 ? "[no category]" : $"[{category.SortOrder}] {category.Name}")
-                    @if (category.Id != 0)
-                    {
-                        <a class="btn btn-default btn-xs" asp-area="" asp-controller="Category" asp-action="Edit" asp-route-id="@category.Id">
-                            <i class="glyphicon glyphicon-pencil"></i>
-                        </a>
-                    }
-                </h3>
-                @foreach (var item in category.MenuItems.OrderBy(x => x.SortOrder))
-                {
-                    <ul class="list-group">
-                        <li class="list-group-item" id="item-@item.Id">
-                            <h4>
-                                <span class="pull-right">
-                                    <a class="btn btn-default item-delete" data-id="@item.Id" data-restore="@item.IsDeleted">
-                                        <i class="glyphicon @(item.IsDeleted ? "glyphicon-refresh" : "glyphicon-trash")"></i>
-                                    </a>
-                                    <a class="btn btn-default" asp-area="" asp-controller="Menu" asp-action="Edit" asp-route-id="@item.Id">
-                                        <i class="glyphicon glyphicon-pencil"></i>
-                                    </a>
-                                </span>
-                                [@item.SortOrder]
-                                @item.Name
-                            </h4>
-                            <p>
-                                @item.Description
-                            </p>
-                            <p class="small text-right">
-                                @foreach (var price in item.Prices.OrderBy(x => x.PriceTypeSortOrder))
-                                {
-                                    <span style="margin-right:1em">
-                                        @(string.IsNullOrWhiteSpace(price.PriceTypeName) ? "[no price type]" : price.PriceTypeName): 
-                                        @price.AmountAsCurrency
-                                    </span>
-                                }
-                            </p>
-                        </li>
-                    </ul>
-                }
+                <a class="btn btn-default btn-xs" asp-area="" asp-controller="Category" asp-action="Edit" asp-route-id="@category.Id">
+                    <i class="glyphicon glyphicon-pencil"></i>
+                </a>
             }
+        </h3>
+        @foreach (var item in category.MenuItems.OrderBy(x => x.SortOrder))
+        {
+            <ul class="list-group">
+                <li class="list-group-item" id="item-@item.Id">
+                    <h4>
+                        <span class="pull-right">
+                            <a class="btn btn-default item-delete" data-id="@item.Id" data-restore="@item.IsDeleted">
+                                <i class="glyphicon @(item.IsDeleted ? "glyphicon-refresh" : "glyphicon-trash")"></i>
+                            </a>
+                            <a class="btn btn-default" asp-area="" asp-controller="Menu" asp-action="Edit" asp-route-id="@item.Id">
+                                <i class="glyphicon glyphicon-pencil"></i>
+                            </a>
+                        </span>
+                        [@item.SortOrder]
+                        @item.Name
+                    </h4>
+                    <p>
+                        @item.Description
+                    </p>
+                    <p class="small text-right">
+                        @foreach (var price in item.Prices.OrderBy(x => x.PriceTypeSortOrder))
+                        {
+                            <span style="margin-right:1em">
+                                @(string.IsNullOrWhiteSpace(price.PriceTypeName) ? "[no price type]" : price.PriceTypeName):
+                                @price.AmountAsCurrency
+                            </span>
+                        }
+                    </p>
+                </li>
+            </ul>
         }
+    }
+}
 
 
 @section Scripts {

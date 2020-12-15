@@ -1,33 +1,17 @@
 ﻿@using System.Collections.Generic
 @model IEnumerable<Naspinski.FoodTruck.Data.Distribution.Models.Menu.CategoryModel>
-
-<h2>
-    Categories
-    <a class="btn btn-default" asp-area="" asp-controller="Category" asp-action="Edit">
-        <i class="glyphicon glyphicon-plus"></i>
-    </a>
-    @if (ViewData["Deleted"].ToString() == "False")
-    {
-        <a class="btn btn-default pull-right" asp-area="" asp-controller="Category" asp-action="Index" asp-route-deleted="true">
-            Deleted Items
-        </a>
-    }
-    else
-    {
-        <a class="btn btn-default pull-right" asp-area="" asp-controller="Category" asp-action="Index">
-            Active Items
-        </a>
-    }
-</h2>
-<hr />
+@using Naspinski.FoodTruck.Admin.Models
+@await Html.PartialAsync("_IndexHeader", new IndexHeaderModel("Category", "Categories"))
 
 <ul class="list-group">
-    @if (!Model.Any()) {  
-    <li class="list-group-item">
-        no categories
-        <a asp-area="" asp-controller="Category" asp-action="Edit">add a Category item</a>
-    </li> }
-    @foreach(var item in Model.OrderBy(x => x.SortOrder))
+    @if (!Model.Any())
+    {
+        <li class="list-group-item">
+            no categories
+            <a asp-area="" asp-controller="Category" asp-action="Edit">add Category item</a>
+        </li>
+   }
+    @foreach (var item in Model.OrderBy(x => x.SortOrder))
     {
         <li class="list-group-item" id="item-@item.Id">
             <h4>
