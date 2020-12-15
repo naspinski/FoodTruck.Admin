@@ -1,21 +1,10 @@
 ﻿@model Naspinski.FoodTruck.Data.Distribution.Models.Menu.MenuItemModel
-@{ 
+@using Naspinski.FoodTruck.Admin.Models
+@{
     var categories = ViewData["Categories"] as IEnumerable<SelectListItem>;
     var images = ViewData["Images"] as IEnumerable<SelectListItem>;
 }
-
-    <h2>
-        <span data-bind="text: (IsNew() ? 'New' : 'Edit')"></span>
-        Menu Item
-        <a class="btn btn-default pull-right" asp-area="" asp-controller="Menu" asp-action="Edit">
-            <i class="glyphicon glyphicon-plus"></i>
-        </a>
-        <a class="btn btn-default pull-right" asp-area="" asp-controller="Menu" asp-action="Index">
-            <i class="glyphicon glyphicon-cutlery"></i>
-            Menu
-        </a>
-    </h2>
-<hr />
+@await Html.PartialAsync("_EditHeader", new EditHeaderModel(Model.IsNew, "Menu"))
 <div class="row">
     <form method="post" id="form-edit">
         <div class="col-md-4">
@@ -27,17 +16,17 @@
                 </a>
                 <label asp-for="CategoryId"></label>
                 @if (categories.Any())
-        {
-            <select asp-for="CategoryId" data-bind="value: CategoryId" asp-items="categories" class="form-control">
-                <option></option>
-            </select>
-            <span asp-validation-for="CategoryId" class="text-danger"></span>
-}
-else
-{
-        <div>no categories available</div>
-        <input asp-for="CategoryId" type="hidden" data-bind="value: CategoryId" />
-}
+                {
+                    <select asp-for="CategoryId" data-bind="value: CategoryId" asp-items="categories" class="form-control">
+                        <option></option>
+                    </select>
+                    <span asp-validation-for="CategoryId" class="text-danger"></span>
+                }
+                else
+                {
+                    <div>no categories available</div>
+                    <input asp-for="CategoryId" type="hidden" data-bind="value: CategoryId" />
+                }
             </div>
             <div class="form-group">
                 <label asp-for="Name"></label>
@@ -73,22 +62,22 @@ else
                 </a>
                 <label>Prices</label>
                 <div data-bind="foreach: Prices">
-                        <input type="hidden" data-bind="value: Id" />
+                    <input type="hidden" data-bind="value: Id" />
 
-                        <select data-bind="options: $root.PriceTypes,
+                    <select data-bind="options: $root.PriceTypes,
                                 optionsText: 'Text',
                                 optionsValue: 'Value',
                                 value: PriceTypeId,
                                 optionsCaption: 'Price Type'"></select>
 
-                        <div class="input-group">
-                            <span class="input-group-addon">$</span>
-                            <input data-bind="value: Amount" class="form-control" type="number" />
-                            <span class="input-group-addon pointer" data-bind="click:$root.removePrice">
-                                <i class="glyphicon glyphicon-remove-sign"></i>
-                            </span>
-                        </div>
-                        <div style="height:.5em"></div>
+                    <div class="input-group">
+                        <span class="input-group-addon">$</span>
+                        <input data-bind="value: Amount" class="form-control" type="number" />
+                        <span class="input-group-addon pointer" data-bind="click:$root.removePrice">
+                            <i class="glyphicon glyphicon-remove-sign"></i>
+                        </span>
+                    </div>
+                    <div style="height:.5em"></div>
                 </div>
             </div>
         </div>
@@ -240,7 +229,7 @@ else
                     $.toast({ text: 'Removed', icon: 'success' })
                 }
             }
-            
+
             self.removeComboPart = function (comboPart) {
                 if (comboPart.Id() > 0) {
                     $.ajax({

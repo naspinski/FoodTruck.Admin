@@ -1,16 +1,6 @@
 ﻿@model Naspinski.FoodTruck.Data.Distribution.Models.System.SiblingSiteModel
-    <h2>
-        <span id="new-edit">@(Model.IsNew ? "New" : "Edit") </span>
-        Sibling Site
-        <a class="btn btn-default pull-right" asp-area="" asp-controller="SiblingSite" asp-action="Edit">
-            <i class="glyphicon glyphicon-plus"></i>
-        </a>
-        <a class="btn btn-default pull-right" asp-area="" asp-controller="SiblingSite" asp-action="Index">
-            <i class="glyphicon glyphicon-list"></i>
-            Sibling Site
-        </a>
-    </h2>
-<hr />
+@using Naspinski.FoodTruck.Admin.Models
+@await Html.PartialAsync("_EditHeader", new EditHeaderModel(Model.IsNew, "SiblingSite"))
 <div class="row">
     <form method="post" id="form-edit">
         <div class="col-md-6">

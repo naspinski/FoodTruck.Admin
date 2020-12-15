@@ -1,0 +1,14 @@
+﻿@model Naspinski.FoodTruck.Admin.Models.EditHeaderModel
+
+<h2>
+    <span id="new-edit">@(Model.IsNew ? "New" : "Edit") </span>
+    @Model.Text
+    <a class="btn btn-default pull-right" href="@($"/{Model.Controller}/Edit")">
+        <i class="glyphicon glyphicon-plus"></i>
+    </a>
+    <a class="btn btn-default pull-right" asp-area="" asp-controller="@Model.Controller" asp-action="Index">
+        <i class="glyphicon glyphicon-list"></i>
+        @Model.Text
+    </a>
+</h2>
+<hr />

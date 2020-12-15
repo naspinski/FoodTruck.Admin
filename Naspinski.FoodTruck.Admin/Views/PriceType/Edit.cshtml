@@ -1,17 +1,6 @@
 ﻿@model Naspinski.FoodTruck.Data.Distribution.Models.Menu.PriceTypeModel
-
-    <h2>
-        <span id="new-edit">@(Model.IsNew ? "New" : "Edit") </span>
-        Price Type
-        <a class="btn btn-default pull-right" asp-area="" asp-controller="PriceType" asp-action="Edit">
-            <i class="glyphicon glyphicon-plus"></i>
-        </a>
-        <a class="btn btn-default pull-right" asp-area="" asp-controller="PriceType" asp-action="Index">
-            <i class="glyphicon glyphicon-list"></i>
-            Price Types
-        </a>
-    </h2>
-<hr />
+@using Naspinski.FoodTruck.Admin.Models
+@await Html.PartialAsync("_EditHeader", new EditHeaderModel(Model.IsNew, "PriceType"))
 <div class="row">
     <div class="col-md-4">
         <form method="post" id="form-edit">

@@ -1,16 +1,6 @@
 ﻿@model Naspinski.FoodTruck.Data.Distribution.Models.System.SquareLocationModel
-    <h2>
-        <span id="new-edit">@(Model.IsNew ? "New" : "Edit") </span>
-        Square Location
-        <a class="btn btn-default pull-right" asp-area="" asp-controller="SquareLocation" asp-action="Edit">
-            <i class="glyphicon glyphicon-plus"></i>
-        </a>
-        <a class="btn btn-default pull-right" asp-area="" asp-controller="SquareLocation" asp-action="Index">
-            <i class="glyphicon glyphicon-list"></i>
-            Square Location
-        </a>
-    </h2>
-<hr />
+@using Naspinski.FoodTruck.Admin.Models
+@await Html.PartialAsync("_EditHeader", new EditHeaderModel(Model.IsNew, "SquareLocation"))
 <div class="row">
     <form method="post" id="form-edit">
         <div class="col-md-6">

@@ -1,16 +1,6 @@
 ﻿@model Naspinski.FoodTruck.Data.Distribution.Models.Specials.SpecialModel
-    <h2>
-        <span id="new-edit">@(Model.IsNew ? "New" : "Edit") </span>
-        Special
-        <a class="btn btn-default pull-right" asp-area="" asp-controller="Special" asp-action="Edit">
-            <i class="glyphicon glyphicon-plus"></i>
-        </a>
-        <a class="btn btn-default pull-right" asp-area="" asp-controller="Special" asp-action="Index">
-            <i class="glyphicon glyphicon-list"></i>
-            Specials
-        </a>
-    </h2>
-<hr />
+@using Naspinski.FoodTruck.Admin.Models
+@await Html.PartialAsync("_EditHeader", new EditHeaderModel(Model.IsNew, "Special"))
 <div class="row">
     <form method="post" id="form-edit">
         <div class="col-md-6">
@@ -99,7 +89,7 @@
                     })
                 }
             });
-            
+
             $('.datetime-picker').datetimepicker({
                 format: 'LT'
             });
