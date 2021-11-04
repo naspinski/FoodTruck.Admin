@@ -1,7 +1,7 @@
 ﻿@using System.Collections.Generic
 @model IEnumerable<Naspinski.FoodTruck.Data.Distribution.Models.System.SiblingSiteModel>
 @using Naspinski.FoodTruck.Admin.Models
-@await Html.PartialAsync("_IndexHeader", new IndexHeaderModel("SibligSite", "Sibling Sites"))
+@await Html.PartialAsync("_IndexHeader", new IndexHeaderModel("SiblingSite", "Sibling Sites"))
 <ul class="list-group">
     @if (!Model.Any())
     {
@@ -19,7 +19,7 @@
                         <a class="btn btn-default item-delete" data-id="@item.Id" data-restore="@item.IsDeleted">
                             <i class="glyphicon @(item.IsDeleted ? "glyphicon-refresh" : "glyphicon-trash")"></i>
                         </a>
-                        <a class="btn btn-default" asp-area="" asp-controller="Menu" asp-action="Edit" asp-route-id="@item.Id">
+                        <a class="btn btn-default" asp-area="" asp-controller="SiblingSite" asp-action="Edit" asp-route-id="@item.Id">
                             <i class="glyphicon glyphicon-pencil"></i>
                         </a>
                     </span>
