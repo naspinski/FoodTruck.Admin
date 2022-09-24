@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using System.Net;
 
 namespace Naspinski.FoodTruck.AdminWeb
 {
@@ -79,21 +80,21 @@ namespace Naspinski.FoodTruck.AdminWeb
 
             app.UseStaticFiles();
 
+            app.UseRouting();
+
+            app.UseAuthorization();
+
             app.UseAuthentication();
 
-            IApplicationBuilder applicationBuilder = app.UseMvc(routes =>
+            app.UseEndpoints(endpoints =>
             {
-                routes.MapRoute(
+                endpoints.MapControllerRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapHub<SignalHub>("/hub");
             });
 
             initializer.Seed().Wait();
-            
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapHub<SignalHub>("/hub");
-            });
         }
     }
 }
