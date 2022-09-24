@@ -90,9 +90,9 @@ namespace Naspinski.FoodTruck.AdminWeb
 
             initializer.Seed().Wait();
             
-            app.UseSignalR(routes =>
+            app.UseEndpoints(endpoints =>
             {
-                routes.MapHub<SignalHub>("/hub");
+                endpoints.MapHub<SignalHub>("/hub");
             });
         }
     }

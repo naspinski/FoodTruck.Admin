@@ -9,8 +9,8 @@ using Naspinski.FoodTruck.Data.Distribution.Handlers.Menu;
 using Naspinski.FoodTruck.Data.Distribution.Handlers.System;
 using Naspinski.FoodTruck.Data.Distribution.Models.Menu;
 using Naspinski.FoodTruck.Data.Distribution.Models.System;
-using Newtonsoft.Json;
 using System.Linq;
+using System.Text.Json;
 
 namespace Naspinski.FoodTruck.AdminWeb.Controllers
 {
@@ -50,7 +50,8 @@ namespace Naspinski.FoodTruck.AdminWeb.Controllers
         public IActionResult Edit(int id = 0)
         {
             ViewData["Categories"] = _categoryHandler.GetAll().Select(x => new SelectListItem() { Text = x.Name, Value = x.Id.ToString() });
-            ViewData["PriceTypes"] = JsonConvert.SerializeObject(_priceTypeHandler.GetAll().Select(x => new SelectListItem() { Text = x.Name, Value = x.Id.ToString() }));
+            var priceTypes = _priceTypeHandler.GetAll().Select(x => new SelectListItem() { Text = x.Name, Value = x.Id.ToString() });
+            ViewData["PriceTypes"] = JsonSerializer.Serialize(priceTypes);
             ViewData["Images"] = _imageHandler.GetAll().Select(x => new SelectListItem() { Text = x.Name, Value = x.Id.ToString() });
 
             return View(new MenuItemModel() { Id = id });

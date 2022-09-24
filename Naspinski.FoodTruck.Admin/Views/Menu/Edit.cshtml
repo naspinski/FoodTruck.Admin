@@ -137,7 +137,7 @@
             self.ItemId = ko.observable('');
 
             self.PriceTypes = @Html.Raw(ViewData["PriceTypes"]);
-            self.Categories = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewData["Categories"]));
+            self.Categories = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(ViewData["Categories"]));
 
             self.load = function (id) {
                 $.ajax({

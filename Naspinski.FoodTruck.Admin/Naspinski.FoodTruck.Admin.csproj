@@ -1,32 +1,31 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <UserSecretsId>aspnet-Naspinski.FoodTruck.Admin-5FF7D839-22CF-4A8D-A123-9E56FF2F0395</UserSecretsId>
     <Configurations>Debug;Release;Development;Production;Champlin</Configurations>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.1.4" />
-    <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="3.6.0" />
-    <PackageReference Include="Elmah.Io.AspNetCore" Version="3.8.103" />
-    <PackageReference Include="IdentityServer4.AspNetIdentity" Version="3.1.3" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.4" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="6.0.9" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="4.3.0" />
+    <PackageReference Include="Elmah.Io.AspNetCore" Version="4.2.42" />
+    <PackageReference Include="IdentityServer4.AspNetIdentity" Version="4.1.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.9" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.1.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.4" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.4" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.4" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.3" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.9" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.9" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.9" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.9" PrivateAssets="All" />
     <PackageReference Include="Naspinski.FoodTruck.Data.Distribution" Version="1.0.20201215.162847" />
-    <PackageReference Include="Naspinski.Data" Version="1.0.20200327.134940" />
+    <PackageReference Include="Naspinski.Data" Version="1.0.20220924.151235" />
     <PackageReference Include="Naspinski.FoodTruck.Data" Version="1.0.20201215.162847" />
     <PackageReference Include="Naspinski.FoodTruck.Data.Access" Version="1.0.20201215.162847" />
-    <PackageReference Include="Naspinski.Maps" Version="1.0.20200606.132104" />
-    <PackageReference Include="Naspinski.Messaging" Version="1.0.20200606.132258" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-    <PackageReference Include="Sendgrid" Version="9.15.1" />
+    <PackageReference Include="Naspinski.Maps" Version="1.0.20220924.172130" />
+    <PackageReference Include="Naspinski.Messaging" Version="1.0.20220924.171907" />
+    <PackageReference Include="Sendgrid" Version="9.28.1" />
     <PackageReference Include="Square" Version="5.3.0" />
-    <PackageReference Include="Twilio.AspNet.Core" Version="5.33.1" />
+    <PackageReference Include="Twilio.AspNet.Core" Version="6.0.0" />
     <PackageReference Include="WindowsAzure.Storage" Version="9.3.3" />
   </ItemGroup>
 
