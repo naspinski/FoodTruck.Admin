@@ -13,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using System.Net;
+using System;
 
 namespace Naspinski.FoodTruck.AdminWeb
 {
@@ -33,11 +34,10 @@ namespace Naspinski.FoodTruck.AdminWeb
             var elmah = Configuration.GetSection("ElmahSettings").Get<ElmahSettings>();
             services.AddElmahIo(o => { o.ApiKey = elmah.ApiKey; o.LogId = elmah.LogId; });
 
-            services.AddDbContext<FoodTruckContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("FoodTruckDb")));
-
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("FoodTruckDb")));
+            // Add services to the container.
+            var connectionString = Configuration.GetConnectionString("FoodTruckDb") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+            services.AddDbContext<FoodTruckContext>(options => options.UseSqlServer(connectionString));
+            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("FoodTruckDb")));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
@@ -74,17 +74,15 @@ namespace Naspinski.FoodTruck.AdminWeb
             else
             {
                 app.UseExceptionHandler("/Settings/Error");
-                var options = new RewriteOptions().AddRedirectToHttps();
-                app.UseRewriter(options);
+                app.UseHsts();
             }
 
             app.UseStaticFiles();
 
             app.UseRouting();
 
-            app.UseAuthorization();
-
             app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
