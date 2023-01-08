@@ -16,10 +16,10 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.1" PrivateAssets="All" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.1" PrivateAssets="All" />
-    <PackageReference Include="Naspinski.FoodTruck.Data.Distribution" Version="1.0.20230108.92320" />
+    <PackageReference Include="Naspinski.FoodTruck.Data.Distribution" Version="1.0.20230108.111550" />
     <PackageReference Include="Naspinski.Data" Version="1.0.20220924.151235" />
-    <PackageReference Include="Naspinski.FoodTruck.Data" Version="1.0.20230108.92320" />
-    <PackageReference Include="Naspinski.FoodTruck.Data.Access" Version="1.0.20230108.92320" />
+    <PackageReference Include="Naspinski.FoodTruck.Data" Version="1.0.20230108.111550" />
+    <PackageReference Include="Naspinski.FoodTruck.Data.Access" Version="1.0.20230108.111550" />
     <PackageReference Include="Naspinski.Maps" Version="1.0.20220924.172130" />
     <PackageReference Include="Naspinski.Messaging" Version="1.0.20220924.171907" />
     <PackageReference Include="Sendgrid" Version="9.28.1" />
