@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System.Threading.Tasks;
 using Naspinski.FoodTruck.Data.Distribution.Handlers.System;
+using System.Linq;
 
 namespace Naspinski.FoodTruck.AdminWeb.Controllers
 {
@@ -39,7 +40,15 @@ namespace Naspinski.FoodTruck.AdminWeb.Controllers
         public async Task<IActionResult> Index(ImageIndexModel model)
         {
             var location = FileUploader.ProcessFormFile(_azureSettings.StorageAccount, _azureSettings.StorageAccountPassword, model.File, "images", ModelState, overwrite: true).Result.ToString();
-            _handler.Upsert(new ImageModel() { Name = model.Name, Location = location });
+            
+            var exists = _handler.GetAll().FirstOrDefault(x => x.Location.Equals(location, System.StringComparison.InvariantCultureIgnoreCase));
+            if (exists != null)
+            {
+                exists.Name = model.Name;
+                exists.IsDeleted = false;
+            }
+
+            _handler.Upsert(exists == null ? new ImageModel() { Name = model.Name, Location = location } : exists);
             return RedirectToAction(nameof(Index));
         }
 
