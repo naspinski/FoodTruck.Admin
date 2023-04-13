@@ -38,7 +38,7 @@ namespace Naspinski.FoodTruck.AdminWeb.Controllers
         [HttpPost]
         public async Task<IActionResult> Index(ImageIndexModel model)
         {
-            var location = FileUploader.ProcessFormFile(_azureSettings.StorageAccount, _azureSettings.StorageAccountPassword, model.File, "images", ModelState).Result.ToString();
+            var location = FileUploader.ProcessFormFile(_azureSettings.StorageAccount, _azureSettings.StorageAccountPassword, model.File, "images", ModelState, overwrite: true).Result.ToString();
             _handler.Upsert(new ImageModel() { Name = model.Name, Location = location });
             return RedirectToAction(nameof(Index));
         }
