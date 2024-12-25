@@ -1,18 +1,15 @@
-﻿using Naspinski.FoodTruck.AdminWeb.Data;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Naspinski.FoodTruck.AdminWeb.Data;
 using Naspinski.FoodTruck.AdminWeb.Models;
 using Naspinski.FoodTruck.AdminWeb.Services;
 using Naspinski.FoodTruck.AdminWeb.SignalR;
 using Naspinski.FoodTruck.Data;
-using Elmah.Io.AspNetCore;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Rewrite;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.DependencyInjection;
-using System.Net;
 using System;
 
 namespace Naspinski.FoodTruck.AdminWeb
@@ -37,7 +34,17 @@ namespace Naspinski.FoodTruck.AdminWeb
             // Add services to the container.
             var connectionString = Configuration.GetConnectionString("FoodTruckDb") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
             services.AddDbContext<FoodTruckContext>(options => options.UseSqlServer(connectionString));
-            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("FoodTruckDb")));
+            services.AddDbContext<ApplicationDbContext>(options =>
+            {
+                options.UseSqlServer(Configuration.GetConnectionString("FoodTruckDb"),
+                    sqlServerOptionsAction: opts =>
+                    {
+                        opts.EnableRetryOnFailure(
+                            maxRetryCount: 10,
+                            maxRetryDelay: TimeSpan.FromSeconds(5),
+                            errorNumbersToAdd: null);
+                    });
+            });
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
