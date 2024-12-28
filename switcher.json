@@ -1,0 +1,8 @@
+{
+  "solution": "Naspinski.FoodTruck.Admin.sln",
+  "solutionFolder": null,
+  "mappings": {
+    "Naspinski.FoodTruck.Data": "../FoodTruck.Data/Naspinski.FoodTruck.Data/Naspinski.FoodTruck.Data.csproj"
+  },
+  "removeProjects": true
+}
